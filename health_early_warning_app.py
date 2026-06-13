@@ -716,7 +716,7 @@ risk_label, risk_color = get_risk_label(overall_risk)
 if using_real_data:
     st.success(f"**{T['data_source']}:** {T['real_data']}")
 else:
-    st.warning(f"**{T['data_source']}:** {T['sim_data']} — Connect ESP32 to Firebase to get live data")
+   pass
 
 col_a, col_b, col_c = st.columns([2, 1, 1])
 with col_a:
