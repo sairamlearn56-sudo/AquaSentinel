@@ -107,7 +107,7 @@ def get_real_sensor_data():
             "bacteria":     bacteria,
         }
     except Exception as e:
-        st.sidebar.warning(f"Firebase read error: {e}")
+        st.sidebar.warning(f"FIREBASE ERROR: {e}")
         return None
 
 
