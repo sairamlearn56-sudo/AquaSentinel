@@ -83,7 +83,9 @@ def init_firebase():
 
 
 def get_real_sensor_data():
+    st.write("Firebase init:", init_firebase())
     """Fetch live sensor data from Firebase (sent by ESP32)."""
+    
     if not init_firebase():
         return None
     try:
