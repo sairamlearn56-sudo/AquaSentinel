@@ -89,9 +89,18 @@ def get_real_sensor_data():
     if not init_firebase():
         return None
     try:
-        ref = firebase_db.reference("/waterData")
-        data = ref.get()
-        st.write("Firebase Data:", data)
+       ref = firebase_db.reference("/waterData")
+data = ref.get()
+
+st.write("Firebase Data:", data)
+
+if data is None:
+    st.error("FIREBASE RETURNED NONE")
+    return None
+
+st.success(f"FIREBASE OK: {data}")
+
+tds = float(data.get("tds", 450.0))
         if data is None:
             return None
 
