@@ -89,6 +89,7 @@ def get_real_sensor_data():
     try:
         ref = firebase_db.reference("/waterData")
         data = ref.get()
+        st.write("Firebase Data:", data)
         if data is None:
             return None
 
