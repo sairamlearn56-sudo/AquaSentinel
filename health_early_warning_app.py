@@ -78,29 +78,17 @@ def init_firebase():
             })
         return True
     except Exception as e:
-        st.error(f"Firebase init error: {e}")
+        st.sidebar.error(f"Firebase init error: {e}")
         return False
 
 
 def get_real_sensor_data():
-    st.write("Firebase init:", init_firebase())
     """Fetch live sensor data from Firebase (sent by ESP32)."""
-    
     if not init_firebase():
         return None
     try:
-       ref = firebase_db.reference("/waterData")
-       data = ref.get()
-
-st.write("Firebase Data:", data)
-
-if data is None:
-    st.error("FIREBASE RETURNED NONE")
-    return None
-
-st.success(f"FIREBASE OK: {data}")
-
-tds = float(data.get("tds", 450.0))
+        ref = firebase_db.reference("/waterData")
+        data = ref.get()
         if data is None:
             return None
 
@@ -257,7 +245,7 @@ TRANSLATIONS = {
         "sms_preview": "SMS Preview",
         "data_source": "Data Source",
         "real_data": "🟢 LIVE - ESP32 Sensors",
-       
+        "sim_data": "🟡 SIMULATED - ESP32 not connected",
     },
     "హిందీ (Hindi)": {
         "title": "💧 एआई सामुदायिक स्वास्थ्य पूर्व चेतावनी प्रणाली",
@@ -727,7 +715,7 @@ risk_label, risk_color = get_risk_label(overall_risk)
 if using_real_data:
     st.success(f"**{T['data_source']}:** {T['real_data']}")
 else:
-   pass
+    st.warning(f"**{T['data_source']}:** {T['sim_data']} — Connect ESP32 to Firebase to get live data")
 
 col_a, col_b, col_c = st.columns([2, 1, 1])
 with col_a:
