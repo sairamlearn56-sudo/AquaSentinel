@@ -246,7 +246,7 @@ TRANSLATIONS = {
         "sms_preview": "SMS Preview",
         "data_source": "Data Source",
         "real_data": "🟢 LIVE - ESP32 Sensors",
-        "sim_data": "🟡 SIMULATED - ESP32 not connected",
+       
     },
     "హిందీ (Hindi)": {
         "title": "💧 एआई सामुदायिक स्वास्थ्य पूर्व चेतावनी प्रणाली",
