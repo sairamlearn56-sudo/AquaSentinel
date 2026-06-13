@@ -78,7 +78,7 @@ def init_firebase():
             })
         return True
     except Exception as e:
-        st.sidebar.error(f"Firebase init error: {e}")
+        st.error(f"Firebase init error: {e}")
         return False
 
 
