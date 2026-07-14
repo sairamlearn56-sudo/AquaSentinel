@@ -918,9 +918,13 @@ sms_status_placeholder = st.empty()
 if sms_auto and overall_risk >= sms_threshold:
     prev = st.session_state.last_sms_sent_score
     if prev is None or prev < sms_threshold:
-        if True:
-            sms_body = build_sms_message(selected_zone, overall_risk, alerted or {"Overall": overall_risk}, sensors)
-           ok, status = send_sms_alert(
+        sms_body = build_sms_message(
+    selected_zone,
+    overall_risk,
+    alerted or {"overall": overall_risk},
+    sensors,
+)
+ok, status = send_sms_alert(
     sms_body,
     TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN,
