@@ -861,27 +861,7 @@ with st.sidebar:
 
     st.markdown(f"**{T['sms_target']}:** `{ALERT_PHONE_NUMBER}`")
 
-    twilio_sid = st.text_input(
-        T["twilio_sid"],
-        value=st.session_state.get("twilio_sid", ""),
-        type="password",
-        placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    )
-    twilio_token = st.text_input(
-        T["twilio_token"],
-        value=st.session_state.get("twilio_token", ""),
-        type="password",
-        placeholder="your_auth_token",
-    )
-    twilio_from = st.text_input(
-        T["twilio_from"],
-        value=st.session_state.get("twilio_from", ""),
-        placeholder="+1XXXXXXXXXX",
-    )
-
-    st.session_state["twilio_sid"] = twilio_sid
-    st.session_state["twilio_token"] = twilio_token
-    st.session_state["twilio_from"] = twilio_from
+  st.success("✅ SMS Alerts Enabled")
 
     sms_threshold = st.slider(T["sms_threshold"], min_value=10, max_value=90, value=50, step=5)
     sms_auto = st.checkbox(T["sms_auto"], value=False)
@@ -938,9 +918,14 @@ sms_status_placeholder = st.empty()
 if sms_auto and overall_risk >= sms_threshold:
     prev = st.session_state.last_sms_sent_score
     if prev is None or prev < sms_threshold:
-        if twilio_sid and twilio_token and twilio_from:
+        if True:
             sms_body = build_sms_message(selected_zone, overall_risk, alerted or {"Overall": overall_risk}, sensors)
-            ok, status = send_sms_alert(sms_body, twilio_sid, twilio_token, twilio_from)
+           ok, status = send_sms_alert(
+    sms_body,
+    TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN,
+    TWILIO_PHONE_NUMBER
+)
             st.session_state.last_sms_sent_score = overall_risk
             log_entry = {
                 "time": datetime.now().strftime("%H:%M:%S"),
@@ -1055,7 +1040,7 @@ with tab_overview:
                 st.warning("⚠️ Enter Twilio credentials in the sidebar to send SMS.")
 
         if send_now:
-            if twilio_sid and twilio_token and twilio_from:
+            if True:
                 ok, status = send_sms_alert(sms_preview_body, twilio_sid, twilio_token, twilio_from)
                 log_entry = {
                     "time": datetime.now().strftime("%H:%M:%S"),
