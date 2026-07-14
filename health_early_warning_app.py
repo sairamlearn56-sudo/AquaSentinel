@@ -63,11 +63,9 @@ EXPECTED ESP32 DATA STRUCTURE in Firebase Realtime Database:
 import time
 from twilio.rest import Client
 import streamlit as st
-
-ACCOUNT_SID = st.secrets["TWILIO_ACCOUNT_SID"]
-AUTH_TOKEN = st.secrets["TWILIO_AUTH_TOKEN"]
-TWILIO_NUMBER = st.secrets["TWILIO_PHONE_NUMBER"]
-TO_NUMBER = "+916304033948"
+TWILIO_ACCOUNT_SID = "AC6048fef4548443ba3fb309bbcfaf5a82"
+TWILIO_AUTH_TOKEN = "8d401fbc0420807bae0e2bebe3b759f6"
+TWILIO_PHONE_NUMBER = "+16056206948"
 
 client = Client(ACCOUNT_SID, AUTH_TOKEN)
 def send_sms(message):
