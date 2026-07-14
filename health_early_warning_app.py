@@ -1,5 +1,5 @@
 """
-Jal Suraksha — AI Community Health Early Warning System
+AQUASENTINEL — AI Community Health Early Warning System
 for Water-Borne Disease Prediction
 ==============================================================
 
