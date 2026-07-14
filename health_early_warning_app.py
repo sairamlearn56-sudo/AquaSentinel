@@ -917,31 +917,43 @@ sms_status_placeholder = st.empty()
 
 if sms_auto and overall_risk >= sms_threshold:
     prev = st.session_state.last_sms_sent_score
+
     if prev is None or prev < sms_threshold:
+
         sms_body = build_sms_message(
-    selected_zone,
-    overall_risk,
-    alerted or {"overall": overall_risk},
-    sensors,
-)
-ok, status = send_sms_alert(
-    sms_body,
-    TWILIO_ACCOUNT_SID,
-    TWILIO_AUTH_TOKEN,
-    TWILIO_PHONE_NUMBER
-)
-            st.session_state.last_sms_sent_score = overall_risk
-            log_entry = {
-                "time": datetime.now().strftime("%H:%M:%S"),
-                "zone": selected_zone,
-                "score": f"{overall_risk:.1f}",
-                "status": "✅ Sent" if ok else f"❌ {status}",
-            }
-            st.session_state.sms_log.insert(0, log_entry)
-            if ok:
-                sms_status_placeholder.success(f"📲 Auto-SMS sent to {ALERT_PHONE_NUMBER}! ({status})")
-            else:
-                sms_status_placeholder.error(f"📲 Auto-SMS failed: {status}")
+            selected_zone,
+            overall_risk,
+            alerted or {"overall": overall_risk},
+            sensors,
+        )
+
+        ok, status = send_sms_alert(
+            sms_body,
+            TWILIO_ACCOUNT_SID,
+            TWILIO_AUTH_TOKEN,
+            TWILIO_PHONE_NUMBER
+        )
+
+        st.session_state.last_sms_sent_score = overall_risk
+
+        log_entry = {
+            "time": datetime.now().strftime("%H:%M:%S"),
+            "zone": selected_zone,
+            "score": f"{overall_risk:.1f}",
+            "status": "✅ Sent" if ok else f"❌ {status}",
+        }
+
+        st.session_state.sms_log.insert(0, log_entry)
+
+        if ok:
+            sms_status_placeholder.success(
+                f"📲 Auto-SMS sent to {ALERT_PHONE_NUMBER}! ({status})"
+            )
+        else:
+            sms_status_placeholder.error(
+                f"📲 Auto-SMS failed: {status}"
+            )
+
 else:
     if overall_risk < sms_threshold:
         st.session_state.last_sms_sent_score = None
