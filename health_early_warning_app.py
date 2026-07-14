@@ -61,6 +61,25 @@ EXPECTED ESP32 DATA STRUCTURE in Firebase Realtime Database:
 """
 
 import time
+from twilio.rest import Client
+import streamlit as st
+
+ACCOUNT_SID = st.secrets["TWILIO_ACCOUNT_SID"]
+AUTH_TOKEN = st.secrets["TWILIO_AUTH_TOKEN"]
+TWILIO_NUMBER = st.secrets["TWILIO_PHONE_NUMBER"]
+TO_NUMBER = "+916304033948"
+
+client = Client(ACCOUNT_SID, AUTH_TOKEN)
+def send_sms(message):
+    try:
+        client.messages.create(
+            body=message,
+            from_=TWILIO_NUMBER,
+            to=TO_NUMBER
+        )
+        print("SMS Sent Successfully")
+    except Exception as e:
+        print("SMS Error:", e)
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -883,6 +902,13 @@ sensors, is_live, fetch_error = get_sensor_data(
 )
 disease_risks = compute_disease_risks(sensors)
 overall_risk = float(np.mean(list(disease_risks.values())))
+if overall_risk >= 70:
+    send_sms(
+        f"🚨 Aqua Sentinel AI Alert!\n"
+        f"Overall Risk: {overall_risk:.1f}/100\n"
+        f"Water quality is UNSAFE.\n"
+        f"Please inspect the water source immediately."
+    )
 hist_df = generate_historical_data(selected_zone)
 alerted = {k: v for k, v in disease_risks.items() if v >= 50}
 translated_disease_names = dict(zip(
