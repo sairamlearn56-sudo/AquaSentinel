@@ -861,7 +861,7 @@ with st.sidebar:
 
     st.markdown(f"**{T['sms_target']}:** `{ALERT_PHONE_NUMBER}`")
 
-  st.success("✅ SMS Alerts Enabled")
+    st.success("✅ SMS Alerts Enabled")
 
     sms_threshold = st.slider(T["sms_threshold"], min_value=10, max_value=90, value=50, step=5)
     sms_auto = st.checkbox(T["sms_auto"], value=False)
