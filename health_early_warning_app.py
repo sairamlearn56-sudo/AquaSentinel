@@ -971,414 +971,435 @@ with col_c:
 
 st.markdown("---")
 
-# =========================================================
-# ALERTS + SMS PANEL
-# =========================================================
-st.subheader("🚨 " + T["alerts"])
+tab_overview, tab_live, tab_trends, tab_map, tab_safety, tab_insights = st.tabs([
+    "🚨 Alerts & SMS",
+    "📡 Live Data & Risk",
+    "📈 History & Events",
+    "🗺️ Zone Map",
+    "🛡️ Safety Guide",
+    "🔍 Key Insights",
+])
 
-if not alerted:
-    st.success(T["no_alerts"])
-else:
-    for disease, score in alerted.items():
-        lvl, col = get_risk_label(score)
-        st.markdown(
-            f"""
-            <div style="
-                background-color:{col}15;
-                border-left:6px solid {col};
-                border-radius:6px;
-                padding:10px 16px;
-                margin-bottom:6px;
-            ">
-            <b>{T['alert_msg']} {translated_disease_names[disease]}</b> — {T['risk_level']}:
-            <span style="color:{col}; font-weight:700;">{lvl} ({score:.1f}/100)</span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+with tab_overview:
+    # =========================================================
+    # ALERTS + SMS PANEL
+    # =========================================================
+    st.subheader("🚨 " + T["alerts"])
 
-    with st.expander("📋 " + T["recommendation"], expanded=True):
-        for rec in [T["rec_1"], T["rec_2"], T["rec_3"], T["rec_4"], T["rec_5"]]:
-            st.markdown(f"- {rec}")
-
-# ── SMS Send Panel ─────────────────────────────────────────────────────────────
-with st.expander("📱 " + T["sms_settings"], expanded=bool(alerted)):
-
-    sms_preview_body = build_sms_message(
-        selected_zone, overall_risk,
-        alerted if alerted else {"Overall": overall_risk},
-        sensors
-    )
-    st.markdown(f"**{T['sms_preview']}** → `{ALERT_PHONE_NUMBER}`")
-    st.code(sms_preview_body, language=None)
-
-    col_sms1, col_sms2 = st.columns([1, 2])
-    with col_sms1:
-        send_now = st.button(T["send_sms"], type="primary", use_container_width=True)
-
-    with col_sms2:
-        if not twilio_sid or not twilio_token or not twilio_from:
-            st.warning("⚠️ Enter Twilio credentials in the sidebar to send SMS.")
-
-    if send_now:
-        if twilio_sid and twilio_token and twilio_from:
-            ok, status = send_sms_alert(sms_preview_body, twilio_sid, twilio_token, twilio_from)
-            log_entry = {
-                "time": datetime.now().strftime("%H:%M:%S"),
-                "zone": selected_zone,
-                "score": f"{overall_risk:.1f}",
-                "status": "✅ Sent" if ok else f"❌ {status}",
-            }
-            st.session_state.sms_log.insert(0, log_entry)
-            if ok:
-                st.success(f"✅ SMS sent to {ALERT_PHONE_NUMBER}! ({status})")
-            else:
-                st.error(f"❌ SMS failed: {status}")
-        else:
-            st.error("Please fill in all Twilio credentials in the sidebar first.")
-
-    if st.session_state.sms_log:
-        st.markdown("**📋 SMS Activity Log**")
-        log_df = pd.DataFrame(st.session_state.sms_log)
-        st.dataframe(log_df, use_container_width=True, hide_index=True)
-
-st.markdown("---")
-
-# =========================================================
-# LIVE SENSOR READINGS
-# =========================================================
-st.subheader("📡 " + T["live_sensors"])
-
-s1, s2, s3, s4 = st.columns(4)
-s5, s6, s7, s8 = st.columns(4)
-
-s1.metric(T["water_temp"], format_temp(sensors["water_temp_c"]))
-s2.metric(T["ambient_temp"], format_temp(sensors["ambient_temp_c"]))
-s3.metric(T["ph_level"], f"{sensors['ph']:.2f}")
-s4.metric(T["turbidity"], f"{sensors['turbidity']:.1f}")
-s5.metric(T["tds"], f"{sensors['tds']:.0f}")
-s6.metric(T["rainfall"], f"{sensors['rainfall']:.1f}")
-s7.metric(T["bacteria"], f"{sensors['bacteria']:.0f}")
-s8.metric(T["humidity"], f"{sensors['humidity']:.0f}%")
-
-st.markdown("---")
-
-# =========================================================
-# DISEASE RISK PREDICTION
-# =========================================================
-st.subheader("🧬 " + T["risk_prediction"])
-
-col1, col2 = st.columns([1.2, 1])
-
-with col1:
-    st.markdown(f"#### {T['disease_breakdown']}")
-    risk_df = pd.DataFrame({
-        "Disease": [translated_disease_names[d] for d in disease_risks.keys()],
-        "Risk Score": list(disease_risks.values()),
-    })
-    risk_df["Color"] = risk_df["Risk Score"].apply(lambda x: get_risk_label(x)[1])
-
-    fig_bar = go.Figure(go.Bar(
-        x=risk_df["Risk Score"],
-        y=risk_df["Disease"],
-        orientation="h",
-        marker_color=risk_df["Color"],
-        text=[f"{v:.1f}" for v in risk_df["Risk Score"]],
-        textposition="outside",
-    ))
-    fig_bar.update_layout(
-        xaxis=dict(range=[0, 100], title="Risk Score (0-100)"),
-        height=320,
-        margin=dict(l=10, r=10, t=10, b=10),
-    )
-    st.plotly_chart(fig_bar, use_container_width=True)
-
-with col2:
-    st.markdown(f"#### {T['overall_risk']}")
-    fig_gauge = go.Figure(go.Indicator(
-        mode="gauge+number",
-        value=overall_risk,
-        gauge={
-            "axis": {"range": [0, 100]},
-            "bar": {"color": risk_color},
-            "steps": [
-                {"range": [0, 25],  "color": "rgba(46,204,113,0.3)"},
-                {"range": [25, 50], "color": "rgba(241,196,15,0.3)"},
-                {"range": [50, 75], "color": "rgba(230,126,34,0.3)"},
-                {"range": [75, 100],"color": "rgba(231,76,60,0.3)"},
-            ],
-        },
-        number={"suffix": " / 100"},
-    ))
-    fig_gauge.update_layout(height=320, margin=dict(l=10, r=10, t=30, b=10))
-    st.plotly_chart(fig_gauge, use_container_width=True)
-
-st.markdown("---")
-
-# =========================================================
-# HISTORICAL TRENDS
-# =========================================================
-st.subheader("📈 " + T["trends"])
-
-real_hist_df = fetch_real_historical_data()
-
-if real_hist_df is not None and len(real_hist_df) >= 2:
-    st.success(f"🟢 Showing REAL logged history from ESP32 ({len(real_hist_df)} readings)")
-    hist_df = real_hist_df
-else:
-    st.warning(
-        "⚠️ No real logged history found at /history yet — showing SIMULATED trend data instead. "
-        "Update your ESP32 to POST readings to /history (see notes) to make this live."
-    )
-    # hist_df already holds the simulated fallback generated earlier
-
-tab_trend, tab_events = st.tabs(["📊 Trend Chart", "📋 Contamination Events Log"])
-
-with tab_trend:
-    param_options = {
-        T["bacteria"]:     "bacteria",
-        T["turbidity"]:    "turbidity",
-        T["ph_level"]:     "ph",
-        T["rainfall"]:     "rainfall",
-        T["water_temp"]:   "water_temp_c",
-        T["ambient_temp"]: "ambient_temp_c",
-        T["overall_risk"]: "overall_risk",
-    }
-
-    selected_param_label = st.selectbox(T["param_trend"], options=list(param_options.keys()))
-    selected_param = param_options[selected_param_label]
-
-    plot_df = hist_df.copy()
-    if selected_param in ["water_temp_c", "ambient_temp_c"] and st.session_state.temp_unit.startswith("Fahrenheit"):
-        plot_df[selected_param] = c_to_f(plot_df[selected_param])
-        y_title = selected_param_label.replace("°C", "°F")
+    if not alerted:
+        st.success(T["no_alerts"])
     else:
-        y_title = selected_param_label
-
-    fig_line = px.line(
-        plot_df, x="datetime", y=selected_param,
-        labels={"datetime": "", selected_param: y_title},
-    )
-    fig_line.update_traces(line_color="#3498db")
-    fig_line.update_layout(height=350, margin=dict(l=10, r=10, t=10, b=10))
-
-    if selected_param == "overall_risk":
-        fig_line.add_hline(y=50, line_dash="dash", line_color="orange", annotation_text=T["high_risk"])
-        fig_line.add_hline(y=75, line_dash="dash", line_color="red", annotation_text=T["critical_risk"])
-
-    st.plotly_chart(fig_line, use_container_width=True)
-
-with tab_events:
-    st.markdown(
-        "This log counts **distinct contamination events** — each time the risk score "
-        "crossed *into* a High or Critical level — rather than every single elevated reading, "
-        "so a single multi-hour spike counts once, not dozens of times."
-    )
-
-    high_events = count_contamination_events(hist_df, "overall_risk", threshold=50)
-    critical_events = count_contamination_events(hist_df, "overall_risk", threshold=75)
-    span_days = max((hist_df["datetime"].max() - hist_df["datetime"].min()).days, 1) if len(hist_df) >= 2 else 1
-    peak_risk = float(hist_df["overall_risk"].max()) if len(hist_df) else 0.0
-
-    ec1, ec2, ec3, ec4 = st.columns(4)
-    ec1.metric("⚠️ High-Risk Events", high_events)
-    ec2.metric("🔴 Critical-Risk Events", critical_events)
-    ec3.metric("📈 Peak Risk Recorded", f"{peak_risk:.1f} / 100")
-    ec4.metric("🗓️ Period Covered", f"{span_days} day(s)")
-
-    st.caption(
-        f"Data source: {'real ESP32 logged history' if (real_hist_df is not None and len(real_hist_df) >= 2) else 'simulated demo data'} "
-        f"— {len(hist_df)} readings analyzed."
-    )
-
-st.markdown("---")
-
-# =========================================================
-# ZONE RISK MAP
-# =========================================================
-st.subheader("🗺️ " + T["map_view"])
-
-map_rows = []
-for zname, zinfo in ZONES_DATA.items():
-    zsensors, z_is_live, _ = get_sensor_data(zname, zinfo["firebase_key"], st.session_state.seed_offset)
-    zrisks = compute_disease_risks(zsensors)
-    zoverall = float(np.mean(list(zrisks.values())))
-    lvl, col = get_risk_label(zoverall)
-    map_rows.append({
-        "Zone": zname.split(" - ")[1] if " - " in zname else zname,
-        "Full Zone": zname,
-        "lat": zinfo["lat"],
-        "lon": zinfo["lon"],
-        "Risk Score": zoverall,
-        "Risk Level": lvl,
-        "Population": zinfo["population"],
-        "Live": "🟢" if z_is_live else "⚪",
-    })
-
-map_df = pd.DataFrame(map_rows)
-
-fig_map = px.scatter_mapbox(
-    map_df, lat="lat", lon="lon",
-    size="Risk Score", color="Risk Score",
-    color_continuous_scale=["#2ecc71", "#f1c40f", "#e67e22", "#e74c3c"],
-    range_color=[0, 100],
-    size_max=35,
-    zoom=11,
-    hover_name="Zone",
-    hover_data={"lat": False, "lon": False, "Risk Score": ":.1f", "Population": True, "Risk Level": True, "Live": True},
-)
-fig_map.update_layout(mapbox_style="open-street-map", margin=dict(l=0, r=0, t=0, b=0), height=420)
-st.plotly_chart(fig_map, use_container_width=True)
-
-st.dataframe(
-    map_df[["Zone", "Population", "Risk Score", "Risk Level", "Live"]].rename(columns={
-        "Zone": T["zone"],
-        "Population": T["population"],
-        "Risk Score": T["overall_risk"],
-        "Risk Level": T["risk_level"],
-        "Live": "Live ESP32?",
-    }),
-    use_container_width=True,
-    hide_index=True,
-)
-
-st.markdown("#### 🔍 Zone Deep-Dive: Live + Past Contamination History")
-detail_zone = st.selectbox(
-    "Select an area to view its live reading and contamination history",
-    options=list(ZONES_DATA.keys()),
-    index=list(ZONES_DATA.keys()).index(selected_zone),
-    key="map_detail_zone",
-)
-detail_info = ZONES_DATA[detail_zone]
-detail_sensors, detail_is_live, detail_err = get_sensor_data(
-    detail_zone, detail_info["firebase_key"], st.session_state.seed_offset
-)
-detail_risks = compute_disease_risks(detail_sensors)
-detail_overall = float(np.mean(list(detail_risks.values())))
-detail_lvl, detail_col = get_risk_label(detail_overall)
-detail_summary = summarize_zone_history(
-    detail_zone, detail_info["firebase_key"],
-    real_hist_df if real_hist_df is not None and len(real_hist_df) >= 2 else None,
-)
-
-with st.container():
-    dd1, dd2 = st.columns([1, 1])
-
-    with dd1:
-        st.markdown(f"**📍 {detail_zone} — Right Now**")
-        if detail_is_live:
-            st.success("🟢 Live ESP32 reading")
-        else:
-            st.warning("⚪ Simulated reading (no live ESP32 data for this path yet)")
-        st.metric("Current Risk Level", f"{detail_overall:.1f} / 100", delta=detail_lvl)
-        dd1a, dd1b, dd1c = st.columns(3)
-        dd1a.metric("TDS", f"{detail_sensors['tds']:.0f}")
-        dd1b.metric("Turbidity", f"{detail_sensors['turbidity']:.1f}")
-        dd1c.metric("Water Temp", format_temp(detail_sensors['water_temp_c']))
-
-    with dd2:
-        st.markdown(f"**🕓 {detail_zone} — Past {detail_summary['span_days']} Day(s)**")
-        st.caption(
-            "🟢 Based on real logged ESP32 history" if detail_summary["is_real"]
-            else "⚪ Based on simulated demo history (connect ESP32 history logging for real data)"
-        )
-        de1, de2, de3 = st.columns(3)
-        de1.metric("Contaminated (High Risk)", f"{detail_summary['high_events']}x")
-        de2.metric("Critical Events", f"{detail_summary['critical_events']}x")
-        de3.metric("Peak Risk", f"{detail_summary['peak_risk']:.1f}/100")
-
-        if detail_summary["high_events"] == 0:
-            st.info("✅ No high-risk contamination events recorded in this period.")
-        elif detail_summary["critical_events"] > 0:
-            st.error(
-                f"🚨 This zone reached CRITICAL contamination levels {detail_summary['critical_events']} time(s) "
-                f"in the last {detail_summary['span_days']} day(s). Continued monitoring and precautions advised."
-            )
-        else:
-            st.warning(
-                f"⚠️ This zone crossed into High Risk {detail_summary['high_events']} time(s) "
-                f"in the last {detail_summary['span_days']} day(s)."
-            )
-
-st.markdown("---")
-
-# =========================================================
-# SAFETY & PRECAUTIONS
-# =========================================================
-st.subheader("🛡️ Safety & Precautions Guide")
-st.caption(
-    "General public-health guidance — not a substitute for medical advice. "
-    "If you or someone nearby is seriously unwell, contact a healthcare provider immediately."
-)
-
-safety_tab_general, safety_tab_disease = st.tabs(["✅ General Precautions", "🧬 Disease-Specific Guidance"])
-
-with safety_tab_general:
-    st.markdown(f"#### Recommended precautions right now for **{selected_zone}**")
-    if overall_risk >= 75:
-        st.error("🚨 **Critical risk zone** — treat ALL local water sources as unsafe until levels normalize.")
-    elif overall_risk >= 50:
-        st.warning("⚠️ **High risk zone** — boil or treat water before any use; avoid direct contact with untreated sources.")
-    elif overall_risk >= 25:
-        st.info("ℹ️ **Moderate risk zone** — basic precautions recommended; monitor for updates.")
-    else:
-        st.success("✅ **Low risk zone** — conditions currently normal; standard hygiene practices still apply.")
-
-    for tip in GENERAL_PRECAUTIONS:
-        st.markdown(f"- {tip}")
-
-with safety_tab_disease:
-    st.markdown("Symptoms, prevention, and when to seek medical help for each monitored disease:")
-    disease_tab_objs = st.tabs([f"{DISEASE_SAFETY_INFO[d]['icon']} {translated_disease_names[d]}" for d in disease_risks.keys()])
-
-    for tab_obj, disease_key in zip(disease_tab_objs, disease_risks.keys()):
-        info = DISEASE_SAFETY_INFO[disease_key]
-        score = disease_risks[disease_key]
-        lvl, col = get_risk_label(score)
-        with tab_obj:
+        for disease, score in alerted.items():
+            lvl, col = get_risk_label(score)
             st.markdown(
-                f"**Current risk in {selected_zone}:** "
-                f"<span style='color:{col}; font-weight:700;'>{lvl} ({score:.1f}/100)</span>",
+                f"""
+                <div style="
+                    background-color:{col}15;
+                    border-left:6px solid {col};
+                    border-radius:6px;
+                    padding:10px 16px;
+                    margin-bottom:6px;
+                ">
+                <b>{T['alert_msg']} {translated_disease_names[disease]}</b> — {T['risk_level']}:
+                <span style="color:{col}; font-weight:700;">{lvl} ({score:.1f}/100)</span>
+                </div>
+                """,
                 unsafe_allow_html=True,
             )
-            st.markdown(f"**🤒 Symptoms:** {info['symptoms']}")
-            st.markdown(f"**🛡️ Prevention:** {info['prevention']}")
-            st.markdown(f"**🏥 When to seek help:** {info['seek_help']}")
 
-st.markdown("---")
+        with st.expander("📋 " + T["recommendation"], expanded=True):
+            for rec in [T["rec_1"], T["rec_2"], T["rec_3"], T["rec_4"], T["rec_5"]]:
+                st.markdown(f"- {rec}")
 
-# =========================================================
-# KEY INSIGHTS / SUMMARY
-# =========================================================
-st.subheader("🔍 " + T["key_insights"])
+    # ── SMS Send Panel ─────────────────────────────────────────────────────────────
+    with st.expander("📱 " + T["sms_settings"], expanded=bool(alerted)):
 
-insight_cols = st.columns(3)
-if len(hist_df) >= 48:
-    recent_risk_change = hist_df["overall_risk"].iloc[-24:].mean() - hist_df["overall_risk"].iloc[-48:-24].mean()
-elif len(hist_df) >= 4:
-    half = len(hist_df) // 2
-    recent_risk_change = hist_df["overall_risk"].iloc[half:].mean() - hist_df["overall_risk"].iloc[:half].mean()
-else:
-    recent_risk_change = 0.0
-trend_icon = "📈" if recent_risk_change > 0 else "📉"
+        sms_preview_body = build_sms_message(
+            selected_zone, overall_risk,
+            alerted if alerted else {"Overall": overall_risk},
+            sensors
+        )
+        st.markdown(f"**{T['sms_preview']}** → `{ALERT_PHONE_NUMBER}`")
+        st.code(sms_preview_body, language=None)
 
-with insight_cols[0]:
-    st.info(f"{trend_icon} **{T['overall_risk']}**: {T['insight_1']} ({recent_risk_change:+.1f} pts)")
+        col_sms1, col_sms2 = st.columns([1, 2])
+        with col_sms1:
+            send_now = st.button(T["send_sms"], type="primary", use_container_width=True)
 
-with insight_cols[1]:
-    if sensors["bacteria"] < 200:
-        st.success(f"🦠 {T['insight_2']}")
+        with col_sms2:
+            if not twilio_sid or not twilio_token or not twilio_from:
+                st.warning("⚠️ Enter Twilio credentials in the sidebar to send SMS.")
+
+        if send_now:
+            if twilio_sid and twilio_token and twilio_from:
+                ok, status = send_sms_alert(sms_preview_body, twilio_sid, twilio_token, twilio_from)
+                log_entry = {
+                    "time": datetime.now().strftime("%H:%M:%S"),
+                    "zone": selected_zone,
+                    "score": f"{overall_risk:.1f}",
+                    "status": "✅ Sent" if ok else f"❌ {status}",
+                }
+                st.session_state.sms_log.insert(0, log_entry)
+                if ok:
+                    st.success(f"✅ SMS sent to {ALERT_PHONE_NUMBER}! ({status})")
+                else:
+                    st.error(f"❌ SMS failed: {status}")
+            else:
+                st.error("Please fill in all Twilio credentials in the sidebar first.")
+
+        if st.session_state.sms_log:
+            st.markdown("**📋 SMS Activity Log**")
+            log_df = pd.DataFrame(st.session_state.sms_log)
+            st.dataframe(log_df, use_container_width=True, hide_index=True)
+
+    st.markdown("---")
+
+
+with tab_live:
+    # =========================================================
+    # LIVE SENSOR READINGS
+    # =========================================================
+    st.subheader("📡 " + T["live_sensors"])
+
+    s1, s2, s3, s4 = st.columns(4)
+    s5, s6, s7, s8 = st.columns(4)
+
+    s1.metric(T["water_temp"], format_temp(sensors["water_temp_c"]))
+    s2.metric(T["ambient_temp"], format_temp(sensors["ambient_temp_c"]))
+    s3.metric(T["ph_level"], f"{sensors['ph']:.2f}")
+    s4.metric(T["turbidity"], f"{sensors['turbidity']:.1f}")
+    s5.metric(T["tds"], f"{sensors['tds']:.0f}")
+    s6.metric(T["rainfall"], f"{sensors['rainfall']:.1f}")
+    s7.metric(T["bacteria"], f"{sensors['bacteria']:.0f}")
+    s8.metric(T["humidity"], f"{sensors['humidity']:.0f}%")
+
+    st.markdown("---")
+
+    # =========================================================
+    # DISEASE RISK PREDICTION
+    # =========================================================
+    st.subheader("🧬 " + T["risk_prediction"])
+
+    col1, col2 = st.columns([1.2, 1])
+
+    with col1:
+        st.markdown(f"#### {T['disease_breakdown']}")
+        risk_df = pd.DataFrame({
+            "Disease": [translated_disease_names[d] for d in disease_risks.keys()],
+            "Risk Score": list(disease_risks.values()),
+        })
+        risk_df["Color"] = risk_df["Risk Score"].apply(lambda x: get_risk_label(x)[1])
+
+        fig_bar = go.Figure(go.Bar(
+            x=risk_df["Risk Score"],
+            y=risk_df["Disease"],
+            orientation="h",
+            marker_color=risk_df["Color"],
+            text=[f"{v:.1f}" for v in risk_df["Risk Score"]],
+            textposition="outside",
+        ))
+        fig_bar.update_layout(
+            xaxis=dict(range=[0, 100], title="Risk Score (0-100)"),
+            height=320,
+            margin=dict(l=10, r=10, t=10, b=10),
+        )
+        st.plotly_chart(fig_bar, use_container_width=True)
+
+    with col2:
+        st.markdown(f"#### {T['overall_risk']}")
+        fig_gauge = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=overall_risk,
+            gauge={
+                "axis": {"range": [0, 100]},
+                "bar": {"color": risk_color},
+                "steps": [
+                    {"range": [0, 25],  "color": "rgba(46,204,113,0.3)"},
+                    {"range": [25, 50], "color": "rgba(241,196,15,0.3)"},
+                    {"range": [50, 75], "color": "rgba(230,126,34,0.3)"},
+                    {"range": [75, 100],"color": "rgba(231,76,60,0.3)"},
+                ],
+            },
+            number={"suffix": " / 100"},
+        ))
+        fig_gauge.update_layout(height=320, margin=dict(l=10, r=10, t=30, b=10))
+        st.plotly_chart(fig_gauge, use_container_width=True)
+
+    st.markdown("---")
+
+
+with tab_trends:
+    # =========================================================
+    # HISTORICAL TRENDS
+    # =========================================================
+    st.subheader("📈 " + T["trends"])
+
+    real_hist_df = fetch_real_historical_data()
+
+    if real_hist_df is not None and len(real_hist_df) >= 2:
+        st.success(f"🟢 Showing REAL logged history from ESP32 ({len(real_hist_df)} readings)")
+        hist_df = real_hist_df
     else:
-        st.warning(f"🦠 **{T['bacteria']}**: {sensors['bacteria']:.0f} CFU/mL")
+        st.warning(
+            "⚠️ No real logged history found at /history yet — showing SIMULATED trend data instead. "
+            "Update your ESP32 to POST readings to /history (see notes) to make this live."
+        )
+        # hist_df already holds the simulated fallback generated earlier
 
-with insight_cols[2]:
-    if sensors["rainfall"] > 10:
-        st.warning(f"🌧️ {T['insight_3']}")
+    tab_trend, tab_events = st.tabs(["📊 Trend Chart", "📋 Contamination Events Log"])
+
+    with tab_trend:
+        param_options = {
+            T["bacteria"]:     "bacteria",
+            T["turbidity"]:    "turbidity",
+            T["ph_level"]:     "ph",
+            T["rainfall"]:     "rainfall",
+            T["water_temp"]:   "water_temp_c",
+            T["ambient_temp"]: "ambient_temp_c",
+            T["overall_risk"]: "overall_risk",
+        }
+
+        selected_param_label = st.selectbox(T["param_trend"], options=list(param_options.keys()))
+        selected_param = param_options[selected_param_label]
+
+        plot_df = hist_df.copy()
+        if selected_param in ["water_temp_c", "ambient_temp_c"] and st.session_state.temp_unit.startswith("Fahrenheit"):
+            plot_df[selected_param] = c_to_f(plot_df[selected_param])
+            y_title = selected_param_label.replace("°C", "°F")
+        else:
+            y_title = selected_param_label
+
+        fig_line = px.line(
+            plot_df, x="datetime", y=selected_param,
+            labels={"datetime": "", selected_param: y_title},
+        )
+        fig_line.update_traces(line_color="#3498db")
+        fig_line.update_layout(height=350, margin=dict(l=10, r=10, t=10, b=10))
+
+        if selected_param == "overall_risk":
+            fig_line.add_hline(y=50, line_dash="dash", line_color="orange", annotation_text=T["high_risk"])
+            fig_line.add_hline(y=75, line_dash="dash", line_color="red", annotation_text=T["critical_risk"])
+
+        st.plotly_chart(fig_line, use_container_width=True)
+
+    with tab_events:
+        st.markdown(
+            "This log counts **distinct contamination events** — each time the risk score "
+            "crossed *into* a High or Critical level — rather than every single elevated reading, "
+            "so a single multi-hour spike counts once, not dozens of times."
+        )
+
+        high_events = count_contamination_events(hist_df, "overall_risk", threshold=50)
+        critical_events = count_contamination_events(hist_df, "overall_risk", threshold=75)
+        span_days = max((hist_df["datetime"].max() - hist_df["datetime"].min()).days, 1) if len(hist_df) >= 2 else 1
+        peak_risk = float(hist_df["overall_risk"].max()) if len(hist_df) else 0.0
+
+        ec1, ec2, ec3, ec4 = st.columns(4)
+        ec1.metric("⚠️ High-Risk Events", high_events)
+        ec2.metric("🔴 Critical-Risk Events", critical_events)
+        ec3.metric("📈 Peak Risk Recorded", f"{peak_risk:.1f} / 100")
+        ec4.metric("🗓️ Period Covered", f"{span_days} day(s)")
+
+        st.caption(
+            f"Data source: {'real ESP32 logged history' if (real_hist_df is not None and len(real_hist_df) >= 2) else 'simulated demo data'} "
+            f"— {len(hist_df)} readings analyzed."
+        )
+
+    st.markdown("---")
+
+
+with tab_map:
+    # =========================================================
+    # ZONE RISK MAP
+    # =========================================================
+    st.subheader("🗺️ " + T["map_view"])
+
+    map_rows = []
+    for zname, zinfo in ZONES_DATA.items():
+        zsensors, z_is_live, _ = get_sensor_data(zname, zinfo["firebase_key"], st.session_state.seed_offset)
+        zrisks = compute_disease_risks(zsensors)
+        zoverall = float(np.mean(list(zrisks.values())))
+        lvl, col = get_risk_label(zoverall)
+        map_rows.append({
+            "Zone": zname.split(" - ")[1] if " - " in zname else zname,
+            "Full Zone": zname,
+            "lat": zinfo["lat"],
+            "lon": zinfo["lon"],
+            "Risk Score": zoverall,
+            "Risk Level": lvl,
+            "Population": zinfo["population"],
+            "Live": "🟢" if z_is_live else "⚪",
+        })
+
+    map_df = pd.DataFrame(map_rows)
+
+    fig_map = px.scatter_mapbox(
+        map_df, lat="lat", lon="lon",
+        size="Risk Score", color="Risk Score",
+        color_continuous_scale=["#2ecc71", "#f1c40f", "#e67e22", "#e74c3c"],
+        range_color=[0, 100],
+        size_max=35,
+        zoom=11,
+        hover_name="Zone",
+        hover_data={"lat": False, "lon": False, "Risk Score": ":.1f", "Population": True, "Risk Level": True, "Live": True},
+    )
+    fig_map.update_layout(mapbox_style="open-street-map", margin=dict(l=0, r=0, t=0, b=0), height=420)
+    st.plotly_chart(fig_map, use_container_width=True)
+
+    st.dataframe(
+        map_df[["Zone", "Population", "Risk Score", "Risk Level", "Live"]].rename(columns={
+            "Zone": T["zone"],
+            "Population": T["population"],
+            "Risk Score": T["overall_risk"],
+            "Risk Level": T["risk_level"],
+            "Live": "Live ESP32?",
+        }),
+        use_container_width=True,
+        hide_index=True,
+    )
+
+    st.markdown("#### 🔍 Zone Deep-Dive: Live + Past Contamination History")
+    detail_zone = st.selectbox(
+        "Select an area to view its live reading and contamination history",
+        options=list(ZONES_DATA.keys()),
+        index=list(ZONES_DATA.keys()).index(selected_zone),
+        key="map_detail_zone",
+    )
+    detail_info = ZONES_DATA[detail_zone]
+    detail_sensors, detail_is_live, detail_err = get_sensor_data(
+        detail_zone, detail_info["firebase_key"], st.session_state.seed_offset
+    )
+    detail_risks = compute_disease_risks(detail_sensors)
+    detail_overall = float(np.mean(list(detail_risks.values())))
+    detail_lvl, detail_col = get_risk_label(detail_overall)
+    detail_summary = summarize_zone_history(
+        detail_zone, detail_info["firebase_key"],
+        real_hist_df if real_hist_df is not None and len(real_hist_df) >= 2 else None,
+    )
+
+    with st.container():
+        dd1, dd2 = st.columns([1, 1])
+
+        with dd1:
+            st.markdown(f"**📍 {detail_zone} — Right Now**")
+            if detail_is_live:
+                st.success("🟢 Live ESP32 reading")
+            else:
+                st.warning("⚪ Simulated reading (no live ESP32 data for this path yet)")
+            st.metric("Current Risk Level", f"{detail_overall:.1f} / 100", delta=detail_lvl)
+            dd1a, dd1b, dd1c = st.columns(3)
+            dd1a.metric("TDS", f"{detail_sensors['tds']:.0f}")
+            dd1b.metric("Turbidity", f"{detail_sensors['turbidity']:.1f}")
+            dd1c.metric("Water Temp", format_temp(detail_sensors['water_temp_c']))
+
+        with dd2:
+            st.markdown(f"**🕓 {detail_zone} — Past {detail_summary['span_days']} Day(s)**")
+            st.caption(
+                "🟢 Based on real logged ESP32 history" if detail_summary["is_real"]
+                else "⚪ Based on simulated demo history (connect ESP32 history logging for real data)"
+            )
+            de1, de2, de3 = st.columns(3)
+            de1.metric("Contaminated (High Risk)", f"{detail_summary['high_events']}x")
+            de2.metric("Critical Events", f"{detail_summary['critical_events']}x")
+            de3.metric("Peak Risk", f"{detail_summary['peak_risk']:.1f}/100")
+
+            if detail_summary["high_events"] == 0:
+                st.info("✅ No high-risk contamination events recorded in this period.")
+            elif detail_summary["critical_events"] > 0:
+                st.error(
+                    f"🚨 This zone reached CRITICAL contamination levels {detail_summary['critical_events']} time(s) "
+                    f"in the last {detail_summary['span_days']} day(s). Continued monitoring and precautions advised."
+                )
+            else:
+                st.warning(
+                    f"⚠️ This zone crossed into High Risk {detail_summary['high_events']} time(s) "
+                    f"in the last {detail_summary['span_days']} day(s)."
+                )
+
+    st.markdown("---")
+
+
+with tab_safety:
+    # =========================================================
+    # SAFETY & PRECAUTIONS
+    # =========================================================
+    st.subheader("🛡️ Safety & Precautions Guide")
+    st.caption(
+        "General public-health guidance — not a substitute for medical advice. "
+        "If you or someone nearby is seriously unwell, contact a healthcare provider immediately."
+    )
+
+    safety_tab_general, safety_tab_disease = st.tabs(["✅ General Precautions", "🧬 Disease-Specific Guidance"])
+
+    with safety_tab_general:
+        st.markdown(f"#### Recommended precautions right now for **{selected_zone}**")
+        if overall_risk >= 75:
+            st.error("🚨 **Critical risk zone** — treat ALL local water sources as unsafe until levels normalize.")
+        elif overall_risk >= 50:
+            st.warning("⚠️ **High risk zone** — boil or treat water before any use; avoid direct contact with untreated sources.")
+        elif overall_risk >= 25:
+            st.info("ℹ️ **Moderate risk zone** — basic precautions recommended; monitor for updates.")
+        else:
+            st.success("✅ **Low risk zone** — conditions currently normal; standard hygiene practices still apply.")
+
+        for tip in GENERAL_PRECAUTIONS:
+            st.markdown(f"- {tip}")
+
+    with safety_tab_disease:
+        st.markdown("Symptoms, prevention, and when to seek medical help for each monitored disease:")
+        disease_tab_objs = st.tabs([f"{DISEASE_SAFETY_INFO[d]['icon']} {translated_disease_names[d]}" for d in disease_risks.keys()])
+
+        for tab_obj, disease_key in zip(disease_tab_objs, disease_risks.keys()):
+            info = DISEASE_SAFETY_INFO[disease_key]
+            score = disease_risks[disease_key]
+            lvl, col = get_risk_label(score)
+            with tab_obj:
+                st.markdown(
+                    f"**Current risk in {selected_zone}:** "
+                    f"<span style='color:{col}; font-weight:700;'>{lvl} ({score:.1f}/100)</span>",
+                    unsafe_allow_html=True,
+                )
+                st.markdown(f"**🤒 Symptoms:** {info['symptoms']}")
+                st.markdown(f"**🛡️ Prevention:** {info['prevention']}")
+                st.markdown(f"**🏥 When to seek help:** {info['seek_help']}")
+
+    st.markdown("---")
+
+
+with tab_insights:
+    # =========================================================
+    # KEY INSIGHTS / SUMMARY
+    # =========================================================
+    st.subheader("🔍 " + T["key_insights"])
+
+    insight_cols = st.columns(3)
+    if len(hist_df) >= 48:
+        recent_risk_change = hist_df["overall_risk"].iloc[-24:].mean() - hist_df["overall_risk"].iloc[-48:-24].mean()
+    elif len(hist_df) >= 4:
+        half = len(hist_df) // 2
+        recent_risk_change = hist_df["overall_risk"].iloc[half:].mean() - hist_df["overall_risk"].iloc[:half].mean()
     else:
-        st.info(f"🌧️ {T['rainfall']}: {sensors['rainfall']:.1f} mm")
+        recent_risk_change = 0.0
+    trend_icon = "📈" if recent_risk_change > 0 else "📉"
 
-st.markdown("---")
-st.caption(T["footer"])
+    with insight_cols[0]:
+        st.info(f"{trend_icon} **{T['overall_risk']}**: {T['insight_1']} ({recent_risk_change:+.1f} pts)")
+
+    with insight_cols[1]:
+        if sensors["bacteria"] < 200:
+            st.success(f"🦠 {T['insight_2']}")
+        else:
+            st.warning(f"🦠 **{T['bacteria']}**: {sensors['bacteria']:.0f} CFU/mL")
+
+    with insight_cols[2]:
+        if sensors["rainfall"] > 10:
+            st.warning(f"🌧️ {T['insight_3']}")
+        else:
+            st.info(f"🌧️ {T['rainfall']}: {sensors['rainfall']:.1f} mm")
+
+    st.markdown("---")
+    st.caption(T["footer"])
+
 
 # =========================================================
 # AUTO REFRESH
