@@ -76,7 +76,7 @@ except ImportError:
 # PAGE CONFIG
 # =========================================================
 st.set_page_config(
-    page_title="Jal Suraksha | Water Health Early Warning",
+    page_title="AquaSentinel AI | Water Health Early Warning",
     page_icon="💧",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -185,8 +185,8 @@ def build_sms_message(zone: str, overall_risk: float, alerted_diseases: dict, se
 # =========================================================
 TRANSLATIONS = {
     "English": {
-        "brand": "Jal Suraksha",
-        "brand_tagline": "Water Safety Network",
+        "brand": "AquaSentinel AI",
+        "brand_tagline": "AI Water Safety Network",
         "title": "AI Community Health Early Warning System",
         "subtitle": "Real-Time Water-Borne Disease Risk Prediction",
         "nav_home": "Home",
@@ -264,7 +264,7 @@ TRANSLATIONS = {
         "home_eyebrow": "Community Water Health Watch",
         "home_hero_title": "Know your water is safe — before anyone gets sick.",
         "home_hero_sub": "Jal Suraksha watches the water your family drinks, every hour of every day, and warns your village early — in your own language.",
-        "home_cta_primary": "Check my village now",
+        "home_cta_primary": "Show Live Readings",
         "home_cta_secondary": "See how it works",
         "home_stat_1_num": "5",
         "home_stat_1_label": "Diseases tracked",
@@ -328,8 +328,8 @@ TRANSLATIONS = {
         "live_col": "Live sensor?",
     },
     "हिन्दी (Hindi)": {
-        "brand": "जल सुरक्षा",
-        "brand_tagline": "जल सुरक्षा नेटवर्क",
+        "brand": "AquaSentinel AI",
+        "brand_tagline": "एआई जल सुरक्षा नेटवर्क",
         "title": "एआई सामुदायिक स्वास्थ्य पूर्व चेतावनी प्रणाली",
         "subtitle": "जल-जनित रोगों के जोखिम की वास्तविक समय भविष्यवाणी",
         "nav_home": "होम",
@@ -406,7 +406,7 @@ TRANSLATIONS = {
         "home_eyebrow": "सामुदायिक जल स्वास्थ्य निगरानी",
         "home_hero_title": "किसी के बीमार होने से पहले जानें कि आपका पानी सुरक्षित है या नहीं।",
         "home_hero_sub": "जल सुरक्षा आपके परिवार के पीने के पानी पर दिन-रात नज़र रखती है और आपके गांव को आपकी अपनी भाषा में समय रहते चेतावनी देती है।",
-        "home_cta_primary": "अभी मेरा गांव जांचें",
+        "home_cta_primary": "लाइव रीडिंग देखें",
         "home_cta_secondary": "यह कैसे काम करता है देखें",
         "home_stat_1_num": "5",
         "home_stat_1_label": "बीमारियों पर नज़र",
@@ -467,8 +467,8 @@ TRANSLATIONS = {
         "live_col": "लाइव सेंसर?",
     },
     "తెలుగు (Telugu)": {
-        "brand": "జల్ సురక్ష",
-        "brand_tagline": "నీటి భద్రతా నెట్‌వర్క్",
+        "brand": "AquaSentinel AI",
+        "brand_tagline": "AI నీటి భద్రతా నెట్‌వర్క్",
         "title": "AI కమ్యూనిటీ హెల్త్ ముందస్తు హెచ్చరిక వ్యవస్థ",
         "subtitle": "నీటి ద్వారా వ్యాపించే వ్యాధుల రియల్-టైమ్ ప్రమాద అంచనా",
         "nav_home": "హోమ్",
@@ -545,7 +545,7 @@ TRANSLATIONS = {
         "home_eyebrow": "కమ్యూనిటీ నీటి ఆరోగ్య నిఘా",
         "home_hero_title": "ఎవరైనా అనారోగ్యానికి గురికాకముందే మీ నీరు సురక్షితమో కాదో తెలుసుకోండి.",
         "home_hero_sub": "జల్ సురక్ష మీ కుటుంబం తాగే నీటిని రోజంతా గమనిస్తూ, మీ గ్రామాన్ని మీ సొంత భాషలో ముందుగానే హెచ్చరిస్తుంది.",
-        "home_cta_primary": "ఇప్పుడే నా గ్రామాన్ని చూడండి",
+        "home_cta_primary": "లైవ్ రీడింగ్‌లు చూడండి",
         "home_cta_secondary": "ఇది ఎలా పనిచేస్తుందో చూడండి",
         "home_stat_1_num": "5",
         "home_stat_1_label": "ట్రాక్ చేస్తున్న వ్యాధులు",
@@ -606,8 +606,8 @@ TRANSLATIONS = {
         "live_col": "లైవ్ సెన్సార్?",
     },
     "Español (Spanish)": {
-        "brand": "Jal Suraksha",
-        "brand_tagline": "Red de Seguridad del Agua",
+        "brand": "AquaSentinel AI",
+        "brand_tagline": "Red de Seguridad del Agua con IA",
         "title": "Sistema de Alerta Temprana de Salud Comunitaria con IA",
         "subtitle": "Predicción en Tiempo Real del Riesgo de Enfermedades Hídricas",
         "nav_home": "Inicio",
@@ -684,7 +684,7 @@ TRANSLATIONS = {
         "home_eyebrow": "Vigilancia Comunitaria del Agua",
         "home_hero_title": "Sepa que su agua es segura — antes de que alguien se enferme.",
         "home_hero_sub": "Jal Suraksha vigila el agua que bebe su familia, las 24 horas del día, y avisa a su pueblo a tiempo, en su propio idioma.",
-        "home_cta_primary": "Revisar mi pueblo ahora",
+        "home_cta_primary": "Ver lecturas en vivo",
         "home_cta_secondary": "Ver cómo funciona",
         "home_stat_1_num": "5",
         "home_stat_1_label": "Enfermedades monitoreadas",
@@ -745,8 +745,8 @@ TRANSLATIONS = {
         "live_col": "¿Sensor en vivo?",
     },
     "Français (French)": {
-        "brand": "Jal Suraksha",
-        "brand_tagline": "Réseau de Sécurité de l'Eau",
+        "brand": "AquaSentinel AI",
+        "brand_tagline": "Réseau de Sécurité de l'Eau par IA",
         "title": "Système d'Alerte Précoce de Santé Communautaire par IA",
         "subtitle": "Prédiction en Temps Réel du Risque de Maladies Hydriques",
         "nav_home": "Accueil",
@@ -823,7 +823,7 @@ TRANSLATIONS = {
         "home_eyebrow": "Veille Communautaire de l'Eau",
         "home_hero_title": "Sachez que votre eau est sûre — avant que quelqu'un ne tombe malade.",
         "home_hero_sub": "Jal Suraksha surveille l'eau que boit votre famille, jour et nuit, et alerte votre village tôt, dans votre propre langue.",
-        "home_cta_primary": "Vérifier mon village maintenant",
+        "home_cta_primary": "Voir les relevés en direct",
         "home_cta_secondary": "Voir comment ça marche",
         "home_stat_1_num": "5",
         "home_stat_1_label": "Maladies suivies",
@@ -1030,7 +1030,7 @@ DISEASE_INFO = {
     "Français (French)": {
         "precautions": [
             "Faites bouillir l'eau potable pendant au moins 1 minute, ou utilisez des comprimés/filtres de purification certifiés, lorsque des alertes de turbidité ou bactériennes sont actives.",
-                "Conservez l'eau traitée dans des récipients propres et couverts — évitez de plonger les mains ou des tasses partagées directement dans les récipients de stockage.",
+            "Conservez l'eau traitée dans des récipients propres et couverts — évitez de plonger les mains ou des tasses partagées directement dans les récipients de stockage.",
             "Lavez-vous les mains au savon pendant au moins 20 secondes avant de manger/cuisiner et après être allé aux toilettes.",
             "Évitez de vous baigner, de nager ou de laver des ustensiles directement dans des sources d'eau signalées à haut risque.",
             "Gardez les sources d'eau potable éloignées des latrines, des drainages et des zones d'élevage.",
@@ -1063,9 +1063,9 @@ DISEASE_INFO = {
         },
     },
 }
- 
+
 DISEASE_KEYS = ["Cholera", "Typhoid", "Diarrhea", "Dysentery", "Hepatitis A"]
- 
+
 # =========================================================
 # SESSION STATE INIT
 # =========================================================
@@ -1080,20 +1080,20 @@ defaults = {
 for k, v in defaults.items():
     if k not in st.session_state:
         st.session_state[k] = v
- 
+
 # =========================================================
 # HELPER FUNCTIONS
 # =========================================================
 def c_to_f(c):
     return c * 9 / 5 + 32
- 
- 
+
+
 def format_temp(value_c):
     if st.session_state.temp_unit.startswith("Fahrenheit"):
         return f"{c_to_f(value_c):.1f} °F"
     return f"{value_c:.1f} °C"
- 
- 
+
+
 def get_risk_label(score):
     T = TRANSLATIONS[st.session_state.language]
     if score < 25:
@@ -1104,8 +1104,8 @@ def get_risk_label(score):
         return T["high_risk"], "#E07A2C"
     else:
         return T["critical_risk"], "#C0392B"
- 
- 
+
+
 def generate_simulated_sensor_data(zone_name, offset=0):
     zone_seed = abs(hash(zone_name)) % 1000
     rng = np.random.default_rng(zone_seed + offset + int(datetime.now().timestamp() // 10))
@@ -1120,15 +1120,15 @@ def generate_simulated_sensor_data(zone_name, offset=0):
         "ambient_temp_c": rng.normal(31, 4),
         "timestamp": None,
     }
- 
- 
+
+
 def get_sensor_data(zone_name, firebase_key, offset=0):
     live_data, err = fetch_live_reading(firebase_key)
     if live_data is not None:
         return live_data, True, None
     return generate_simulated_sensor_data(zone_name, offset), False, err
- 
- 
+
+
 def compute_disease_risks(sensors):
     ph = sensors["ph"]
     turb = sensors["turbidity"]
@@ -1136,14 +1136,14 @@ def compute_disease_risks(sensors):
     rain = sensors["rainfall"]
     wtemp = sensors["water_temp_c"]
     humidity = sensors["humidity"]
- 
+
     ph_risk = np.clip(abs(ph - 7.0) * 25, 0, 100)
     turb_risk = np.clip(turb * 4, 0, 100)
     bact_risk = np.clip(bact / 4, 0, 100)
     rain_risk = np.clip(rain * 3, 0, 100)
     temp_risk = np.clip((wtemp - 25) * 6, 0, 100)
     humidity_risk = np.clip((humidity - 60) * 1.5, 0, 100)
- 
+
     risks = {
         "Cholera":    0.35 * bact_risk + 0.25 * rain_risk + 0.2 * turb_risk + 0.2 * ph_risk,
         "Typhoid":    0.4 * bact_risk + 0.3 * turb_risk + 0.15 * rain_risk + 0.15 * temp_risk,
@@ -1154,8 +1154,8 @@ def compute_disease_risks(sensors):
     for k in risks:
         risks[k] = float(np.clip(risks[k] + np.random.normal(0, 3), 0, 100))
     return risks
- 
- 
+
+
 def fetch_real_historical_data(max_records=2000):
     if not FIREBASE_AVAILABLE:
         return None
@@ -1164,7 +1164,7 @@ def fetch_real_historical_data(max_records=2000):
         data = ref.order_by_key().limit_to_last(max_records).get()
         if not data:
             return None
- 
+
         rows = []
         for key, entry in data.items():
             if not isinstance(entry, dict):
@@ -1182,10 +1182,10 @@ def fetch_real_historical_data(max_records=2000):
                 "ambient_temp_c": float(entry.get("ambient_temp_c", np.nan)),
                 "tds": float(entry.get("tds", np.nan)),
             })
- 
+
         if not rows:
             return None
- 
+
         df = pd.DataFrame(rows).sort_values("datetime").reset_index(drop=True)
         bact_risk = np.clip(df["bacteria"].fillna(0) / 4, 0, 100)
         turb_risk = np.clip(df["turbidity"].fillna(0) * 4, 0, 100)
@@ -1194,8 +1194,8 @@ def fetch_real_historical_data(max_records=2000):
         return df
     except Exception:
         return None
- 
- 
+
+
 def generate_historical_data(zone_name, days=14):
     zone_seed = abs(hash(zone_name)) % 1000
     rng = np.random.default_rng(zone_seed)
@@ -1220,8 +1220,8 @@ def generate_historical_data(zone_name, days=14):
         0, 100
     )
     return df
- 
- 
+
+
 ZONES_DATA = {
     "Zone A - Riverside Village":   {"population": 4200, "lat": 17.385, "lon": 78.486, "firebase_key": "zone_a"},
     "Zone B - Hillside Settlement": {"population": 2800, "lat": 17.405, "lon": 78.466, "firebase_key": "zone_b"},
@@ -1229,16 +1229,16 @@ ZONES_DATA = {
     "Zone D - Central District":    {"population": 9500, "lat": 17.395, "lon": 78.496, "firebase_key": "zone_d"},
     "Zone E - Floodplain Area":     {"population": 3300, "lat": 17.375, "lon": 78.476, "firebase_key": "zone_e"},
 }
- 
- 
+
+
 def count_contamination_events(df, column="overall_risk", threshold=50):
     if df is None or column not in df.columns or len(df) < 2:
         return 0
     above = df[column].fillna(0) >= threshold
     crossings = above & ~above.shift(1, fill_value=False)
     return int(crossings.sum())
- 
- 
+
+
 def summarize_zone_history(zone_name, firebase_key, real_hist_df_available):
     if real_hist_df_available is not None and len(real_hist_df_available) >= 2:
         df = real_hist_df_available
@@ -1246,13 +1246,13 @@ def summarize_zone_history(zone_name, firebase_key, real_hist_df_available):
     else:
         df = generate_historical_data(zone_name)
         is_real = False
- 
+
     high_events = count_contamination_events(df, "overall_risk", threshold=50)
     critical_events = count_contamination_events(df, "overall_risk", threshold=75)
     peak_risk = float(df["overall_risk"].max()) if len(df) else 0.0
     avg_risk = float(df["overall_risk"].mean()) if len(df) else 0.0
     span_days = (df["datetime"].max() - df["datetime"].min()).days if len(df) >= 2 else 0
- 
+
     return {
         "is_real": is_real,
         "high_events": high_events,
@@ -1262,8 +1262,8 @@ def summarize_zone_history(zone_name, firebase_key, real_hist_df_available):
         "span_days": max(span_days, 1),
         "num_readings": len(df),
     }
- 
- 
+
+
 # =========================================================
 # VISUAL IDENTITY — CSS + FONTS
 # =========================================================
@@ -1272,76 +1272,109 @@ def inject_css():
         """
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Noto+Serif:wght@600;700&family=Nunito:wght@400;600;700;800&family=Noto+Sans:wght@400;600;700&display=swap');
- 
-        html, body, [class*="css"], .stMarkdown, p, div, span, li {
-            font-family: 'Nunito', 'Noto Sans', 'Noto Sans Devanagari', 'Noto Sans Telugu', sans-serif;
+
+        :root {
+            --jal-bg: #0A1E21;
+            --jal-bg-elev: #122E32;
+            --jal-bg-elev2: #1B3B40;
+            --jal-teal: #2FA6A6;
+            --jal-teal-dark: #0A3D44;
+            --jal-teal-tint: rgba(47,166,166,0.16);
+            --jal-marigold: #F2B155;
+            --jal-marigold-tint: rgba(242,177,85,0.14);
+            --jal-text: #F4F7F6;
+            --jal-text-dim: #B7CBC9;
+            --jal-text-faint: #8FA6A4;
+            --jal-border: rgba(255,255,255,0.09);
+            --jal-danger: #EF6152;
+            --jal-danger-tint: rgba(239,97,82,0.16);
+            --jal-success: #4FC08A;
+            --jal-success-tint: rgba(79,192,138,0.16);
         }
-        h1, h2, h3, .jal-display {
+
+        html, body, [class*="css"], .stMarkdown, p, div, span, li, label {
+            font-family: 'Nunito', 'Noto Sans', 'Noto Sans Devanagari', 'Noto Sans Telugu', sans-serif;
+            color: var(--jal-text);
+        }
+        h1, h2, h3, h4, h5, h6, .jal-display {
             font-family: 'Fraunces', 'Noto Serif', 'Noto Serif Devanagari', 'Noto Serif Telugu', serif !important;
             font-weight: 700 !important;
             letter-spacing: -0.01em;
+            color: var(--jal-text) !important;
         }
- 
-        :root {
-            --jal-teal: #0F5C66;
-            --jal-teal-dark: #0A3D44;
-            --jal-teal-light: #E4F1F0;
-            --jal-marigold: #E9A23B;
-            --jal-marigold-light: #FBEAD1;
-            --jal-cream: #FBF9F4;
-            --jal-ink: #1F2D2F;
-            --jal-danger: #C0392B;
-            --jal-success: #2E7D53;
+
+        /* ---- Force readable text everywhere, regardless of viewer theme ---- */
+        .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+            background: var(--jal-bg) !important;
         }
- 
-        .stApp {
-            background: var(--jal-cream);
+        [data-testid="stHeader"] { background: transparent !important; }
+
+        .stApp p, .stApp span, .stApp li, .stApp label,
+        .stMarkdown, .stMarkdown p, .stMarkdown li,
+        [data-testid="stMetricValue"], [data-testid="stMetricLabel"],
+        [data-testid="stCaptionContainer"], .stCaption,
+        [data-testid="stWidgetLabel"] p {
+            color: var(--jal-text) !important;
         }
+        .stApp small, .stCaption, [data-testid="stCaptionContainer"] p {
+            color: var(--jal-text-dim) !important;
+        }
+        [data-testid="stMetricValue"] {
+            font-family: 'Fraunces', serif !important;
+            font-weight: 700 !important;
+        }
+        [data-testid="stMetricDelta"] { color: var(--jal-text-dim) !important; }
+
         section[data-testid="stSidebar"] {
-            background: var(--jal-teal-dark);
+            background: #071619 !important;
+            border-right: 1px solid var(--jal-border);
         }
         section[data-testid="stSidebar"] * {
-            color: #EAF3F2 !important;
+            color: var(--jal-text) !important;
         }
         section[data-testid="stSidebar"] .stSelectbox label,
         section[data-testid="stSidebar"] .stRadio label,
         section[data-testid="stSidebar"] .stTextInput label,
         section[data-testid="stSidebar"] .stSlider label,
         section[data-testid="stSidebar"] .stCheckbox label {
-            color: #CFE3E1 !important;
+            color: var(--jal-text-dim) !important;
             font-weight: 600;
         }
- 
+        section[data-testid="stSidebar"] input,
+        section[data-testid="stSidebar"] [data-baseweb="select"] {
+            background: var(--jal-bg-elev) !important;
+            color: var(--jal-text) !important;
+        }
+
         .jal-brand {
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 6px 4px 18px 4px;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
+            border-bottom: 1px solid var(--jal-border);
             margin-bottom: 14px;
         }
-        .jal-brand-icon {
-            font-size: 30px;
-        }
+        .jal-brand-icon { font-size: 30px; }
         .jal-brand-name {
             font-family: 'Fraunces', serif;
-            font-size: 22px;
+            font-size: 21px;
             font-weight: 700;
             color: #FFFFFF !important;
-            line-height: 1.1;
+            line-height: 1.15;
         }
         .jal-brand-tag {
             font-size: 12px;
-            color: #A9CFCB !important;
+            color: var(--jal-text-faint) !important;
             letter-spacing: 0.03em;
         }
- 
+
         /* ---- Hero ---- */
         .jal-hero {
-            background: linear-gradient(135deg, var(--jal-teal) 0%, var(--jal-teal-dark) 100%);
+            background: radial-gradient(circle at 85% 20%, rgba(47,166,166,0.25) 0%, rgba(47,166,166,0) 45%),
+                        linear-gradient(135deg, #113238 0%, #081A1C 100%);
+            border: 1px solid var(--jal-border);
             border-radius: 22px;
             padding: 48px 44px;
-            color: #FFFFFF;
             position: relative;
             overflow: hidden;
             margin-bottom: 28px;
@@ -1353,13 +1386,13 @@ def inject_css():
             bottom: -80px;
             width: 320px;
             height: 320px;
-            background: radial-gradient(circle, rgba(233,162,59,0.35) 0%, rgba(233,162,59,0) 70%);
+            background: radial-gradient(circle, rgba(242,177,85,0.22) 0%, rgba(242,177,85,0) 70%);
         }
         .jal-hero-eyebrow {
             display: inline-block;
-            background: rgba(233,162,59,0.2);
-            color: var(--jal-marigold);
-            border: 1px solid rgba(233,162,59,0.5);
+            background: var(--jal-marigold-tint);
+            color: var(--jal-marigold) !important;
+            border: 1px solid rgba(242,177,85,0.45);
             padding: 5px 14px;
             border-radius: 999px;
             font-size: 13px;
@@ -1375,61 +1408,66 @@ def inject_css():
             margin-bottom: 16px !important;
         }
         .jal-hero p {
-            color: #DCEDEB;
+            color: var(--jal-text-dim) !important;
             font-size: 18px;
             max-width: 600px;
             line-height: 1.55;
         }
- 
+
         /* ---- Cards ---- */
         .jal-card {
-            background: #FFFFFF;
+            background: var(--jal-bg-elev);
             border-radius: 16px;
             padding: 22px 22px;
-            box-shadow: 0 2px 14px rgba(15,92,102,0.08);
-            border: 1px solid rgba(15,92,102,0.08);
+            box-shadow: 0 2px 14px rgba(0,0,0,0.25);
+            border: 1px solid var(--jal-border);
             height: 100%;
         }
+        .jal-card p, .jal-card h3, .jal-card div { color: var(--jal-text) !important; }
+
         .jal-step-card {
-            background: #FFFFFF;
+            background: var(--jal-bg-elev);
             border-radius: 16px;
             padding: 24px 20px;
             border-top: 4px solid var(--jal-marigold);
-            box-shadow: 0 2px 14px rgba(15,92,102,0.06);
+            border-left: 1px solid var(--jal-border);
+            border-right: 1px solid var(--jal-border);
+            border-bottom: 1px solid var(--jal-border);
+            box-shadow: 0 2px 14px rgba(0,0,0,0.2);
             height: 100%;
         }
         .jal-step-num {
             font-family: 'Fraunces', serif;
             font-size: 30px;
             font-weight: 700;
-            color: var(--jal-marigold);
+            color: var(--jal-marigold) !important;
         }
         .jal-step-title {
             font-family: 'Fraunces', serif;
             font-size: 19px;
             font-weight: 700;
-            color: var(--jal-teal-dark);
+            color: #FFFFFF !important;
             margin: 6px 0 8px 0;
         }
         .jal-step-text {
             font-size: 14.5px;
-            color: #445;
+            color: var(--jal-text-dim) !important;
             line-height: 1.5;
         }
- 
+
         .jal-disease-card {
-            background: #FFFFFF;
+            background: var(--jal-bg-elev);
             border-radius: 16px;
             padding: 20px;
-            box-shadow: 0 2px 14px rgba(15,92,102,0.07);
-            border: 1px solid rgba(15,92,102,0.08);
+            box-shadow: 0 2px 14px rgba(0,0,0,0.2);
+            border: 1px solid var(--jal-border);
             height: 100%;
         }
         .jal-disease-icon-wrap {
             width: 54px;
             height: 54px;
             border-radius: 14px;
-            background: var(--jal-teal-light);
+            background: var(--jal-teal-tint);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1440,19 +1478,19 @@ def inject_css():
             font-family: 'Fraunces', serif;
             font-weight: 700;
             font-size: 17px;
-            color: var(--jal-teal-dark);
+            color: #FFFFFF !important;
             margin-bottom: 6px;
         }
         .jal-disease-hook {
             font-size: 13.5px;
-            color: #4A5A5C;
+            color: var(--jal-text-dim) !important;
             line-height: 1.45;
         }
- 
+
         .jal-eyebrow {
             display: inline-block;
-            color: var(--jal-teal);
-            background: var(--jal-teal-light);
+            color: var(--jal-teal) !important;
+            background: var(--jal-teal-tint);
             padding: 4px 12px;
             border-radius: 999px;
             font-size: 12.5px;
@@ -1461,22 +1499,22 @@ def inject_css():
             text-transform: uppercase;
             margin-bottom: 10px;
         }
- 
+
         .jal-stat-num {
             font-family: 'Fraunces', serif;
             font-size: 34px;
             font-weight: 700;
-            color: var(--jal-teal-dark);
+            color: var(--jal-marigold) !important;
         }
         .jal-stat-label {
             font-size: 13.5px;
-            color: #5A6B6D;
+            color: var(--jal-text-dim) !important;
             font-weight: 600;
         }
- 
+
         .jal-cta-band {
-            background: var(--jal-marigold-light);
-            border: 1px solid rgba(233,162,59,0.5);
+            background: var(--jal-marigold-tint);
+            border: 1px solid rgba(242,177,85,0.4);
             border-radius: 18px;
             padding: 26px 30px;
             display: flex;
@@ -1486,13 +1524,14 @@ def inject_css():
             flex-wrap: wrap;
             margin-top: 10px;
         }
- 
+        .jal-cta-band div { color: var(--jal-marigold) !important; }
+
         .jal-badge-live {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: #E1F3E8;
-            color: var(--jal-success);
+            background: var(--jal-success-tint);
+            color: var(--jal-success) !important;
             padding: 6px 14px;
             border-radius: 999px;
             font-weight: 700;
@@ -1502,59 +1541,97 @@ def inject_css():
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: #FDF1DC;
-            color: #9C6B12;
+            background: var(--jal-marigold-tint);
+            color: var(--jal-marigold) !important;
             padding: 6px 14px;
             border-radius: 999px;
             font-weight: 700;
             font-size: 13px;
         }
- 
+
         div[data-testid="stMetric"] {
-            background: #FFFFFF;
+            background: var(--jal-bg-elev);
             border-radius: 14px;
             padding: 14px 16px;
-            border: 1px solid rgba(15,92,102,0.08);
-            box-shadow: 0 2px 10px rgba(15,92,102,0.05);
+            border: 1px solid var(--jal-border);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
- 
+
+        /* ---- Alert / info boxes ---- */
+        div[data-testid="stAlert"] {
+            background: var(--jal-bg-elev) !important;
+            border: 1px solid var(--jal-border) !important;
+            border-radius: 12px !important;
+        }
+        div[data-testid="stAlert"] p { color: var(--jal-text) !important; }
+
+        /* ---- Tabs ---- */
+        .stTabs [data-baseweb="tab-list"] { gap: 6px; }
+        .stTabs [data-baseweb="tab"] {
+            background: var(--jal-bg-elev);
+            border-radius: 10px 10px 0 0;
+            color: var(--jal-text-dim) !important;
+            font-weight: 600;
+        }
+        .stTabs [aria-selected="true"] {
+            color: var(--jal-marigold) !important;
+            background: var(--jal-bg-elev2);
+        }
+
+        /* ---- Dataframe ---- */
+        [data-testid="stDataFrame"] { border-radius: 12px; overflow: hidden; border: 1px solid var(--jal-border); }
+
+        /* ---- Expander ---- */
+        details, [data-testid="stExpander"] {
+            background: var(--jal-bg-elev) !important;
+            border: 1px solid var(--jal-border) !important;
+            border-radius: 12px !important;
+        }
+
+        /* ---- Buttons ---- */
         .stButton > button {
             border-radius: 999px !important;
             font-weight: 700 !important;
-            border: none !important;
+            border: 1px solid var(--jal-border) !important;
+            background: var(--jal-bg-elev2) !important;
+            color: var(--jal-text) !important;
         }
         .stButton > button[kind="primary"] {
             background: var(--jal-marigold) !important;
-            color: #2A1B04 !important;
+            color: #241505 !important;
+            border: none !important;
         }
- 
+
+        code { color: var(--jal-marigold) !important; background: var(--jal-bg-elev2) !important; }
+
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         </style>
         """,
         unsafe_allow_html=True,
     )
- 
- 
+
+
+
 def water_wave_svg(color="#0F5C66"):
     return f"""
     <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;">
         <path fill="{color}" fill-opacity="0.15" d="M0,32L60,26.7C120,21,240,11,360,16C480,21,600,43,720,48C840,53,960,43,1080,34.7C1200,27,1320,21,1380,18.7L1440,16L1440,60L0,60Z"></path>
     </svg>
     """
- 
- 
+
+
 # =========================================================
 # SIDEBAR — NAVIGATION + SETTINGS
 # =========================================================
 inject_css()
 T = TRANSLATIONS[st.session_state.language]
 DI = DISEASE_INFO[st.session_state.language]
- 
+
 nav_keys = ["Home", "Live", "Trends", "Map", "Safety", "Alerts"]
 nav_labels = [T["nav_home"], T["nav_live"], T["nav_trends"], T["nav_map"], T["nav_safety"], T["nav_alerts"]]
 nav_icons = ["house-heart", "speedometer2", "graph-up-arrow", "geo-alt", "shield-check", "bell"]
- 
+
 with st.sidebar:
     st.markdown(
         f"""
@@ -1568,7 +1645,7 @@ with st.sidebar:
         """,
         unsafe_allow_html=True,
     )
- 
+
     if OPTION_MENU_AVAILABLE:
         chosen_label = option_menu(
             menu_title=None,
@@ -1594,9 +1671,9 @@ with st.sidebar:
     else:
         chosen_label = st.radio("Menu", options=nav_labels, label_visibility="collapsed")
         st.session_state.nav_page = nav_keys[nav_labels.index(chosen_label)]
- 
+
     st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
- 
+
     with st.expander("⚙️ " + T["settings"], expanded=False):
         lang = st.selectbox(
             T["language"],
@@ -1607,7 +1684,7 @@ with st.sidebar:
         if lang != st.session_state.language:
             st.session_state.language = lang
             st.rerun()
- 
+
         temp_unit = st.radio(
             T["temp_unit"],
             options=["Celsius (°C)", "Fahrenheit (°F)"],
@@ -1615,19 +1692,19 @@ with st.sidebar:
             horizontal=True,
         )
         st.session_state.temp_unit = temp_unit
- 
+
         selected_zone = st.selectbox(T["select_zone"], options=list(ZONES_DATA.keys()), key="zone_select")
- 
+
         if FIREBASE_AVAILABLE:
             st.success("🟢 " + T["firebase_connected"])
         else:
             st.error(f"🔴 {T['firebase_not_connected']}: {FIREBASE_INIT_ERROR}")
- 
+
         auto_refresh = st.checkbox(T["auto_refresh"], value=False)
         if st.button(T["refresh"], use_container_width=True):
             st.session_state.seed_offset += 1
             st.rerun()
- 
+
         st.markdown("---")
         st.markdown(f"**{T['sms_settings']}**")
         st.caption(f"{T['sms_target']}: `{ALERT_PHONE_NUMBER}`")
@@ -1639,13 +1716,13 @@ with st.sidebar:
         st.session_state["twilio_from"] = twilio_from
         sms_threshold = st.slider(T["sms_threshold"], min_value=10, max_value=90, value=50, step=5)
         sms_auto = st.checkbox(T["sms_auto"], value=False)
- 
+
     st.caption(T["footer"])
- 
+
 if "zone_select" not in st.session_state:
     st.session_state["zone_select"] = list(ZONES_DATA.keys())[0]
 selected_zone = st.session_state["zone_select"]
- 
+
 # =========================================================
 # DATA FETCH
 # =========================================================
@@ -1657,7 +1734,7 @@ hist_df = generate_historical_data(selected_zone)
 alerted = {k: v for k, v in disease_risks.items() if v >= 50}
 translated_disease_names = dict(zip(DISEASE_KEYS, T["diseases"]))
 risk_label, risk_color = get_risk_label(overall_risk)
- 
+
 # Auto-SMS
 if sms_auto and overall_risk >= sms_threshold:
     prev = st.session_state.last_sms_sent_score
@@ -1675,9 +1752,9 @@ if sms_auto and overall_risk >= sms_threshold:
 else:
     if overall_risk < sms_threshold:
         st.session_state.last_sms_sent_score = None
- 
+
 PAGE = st.session_state.nav_page
- 
+
 # =========================================================
 # PAGE: HOME
 # =========================================================
@@ -1692,7 +1769,7 @@ if PAGE == "Home":
         """,
         unsafe_allow_html=True,
     )
- 
+
     hcol1, hcol2, hspacer = st.columns([1.1, 1.3, 2.6])
     with hcol1:
         if st.button("💧 " + T["home_cta_primary"], type="primary", use_container_width=True):
@@ -1701,7 +1778,7 @@ if PAGE == "Home":
     with hcol2:
         if st.button("▾ " + T["home_cta_secondary"], use_container_width=True):
             st.session_state.nav_page = "Home"
- 
+
     st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
     s1, s2, s3 = st.columns(3)
     for col, num, label in [
@@ -1717,12 +1794,12 @@ if PAGE == "Home":
                 </div>""",
                 unsafe_allow_html=True,
             )
- 
+
     st.markdown("<div style='height:38px'></div>", unsafe_allow_html=True)
- 
+
     st.markdown(f"<span class='jal-eyebrow'>{T['home_how_eyebrow']}</span>", unsafe_allow_html=True)
     st.markdown(f"### {T['home_how_title']}")
- 
+
     steps = [
         ("01", T["home_how_1_title"], T["home_how_1_text"]),
         ("02", T["home_how_2_title"], T["home_how_2_text"]),
@@ -1740,13 +1817,13 @@ if PAGE == "Home":
                 </div>""",
                 unsafe_allow_html=True,
             )
- 
+
     st.markdown("<div style='height:38px'></div>", unsafe_allow_html=True)
- 
+
     st.markdown(f"<span class='jal-eyebrow'>{T['home_diseases_eyebrow']}</span>", unsafe_allow_html=True)
     st.markdown(f"### {T['home_diseases_title']}")
-    st.markdown(f"<p style='color:#4A5A5C;max-width:680px;'>{T['home_diseases_sub']}</p>", unsafe_allow_html=True)
- 
+    st.markdown(f"<p style='color:#B7CBC9;max-width:680px;'>{T['home_diseases_sub']}</p>", unsafe_allow_html=True)
+
     dcols = st.columns(5)
     for col, dkey, hook in zip(dcols, DISEASE_KEYS, DI["hook"]):
         info = DI["diseases"][dkey]
@@ -1763,16 +1840,16 @@ if PAGE == "Home":
     if st.button("📖 " + T["home_learn_more"]):
         st.session_state.nav_page = "Safety"
         st.rerun()
- 
+
     st.markdown("<div style='height:38px'></div>", unsafe_allow_html=True)
- 
+
     tcol1, tcol2 = st.columns([1, 1.3])
     with tcol1:
         st.markdown(
             f"""<div class="jal-card">
                 <div style="font-size:40px;">🧑‍🤝‍🧑👵👴🧒</div>
                 <h3 style="margin-top:10px;">{T['home_trust_title']}</h3>
-                <p style="color:#4A5A5C; line-height:1.55;">{T['home_trust_text']}</p>
+                <p style="color:#B7CBC9; line-height:1.55;">{T['home_trust_text']}</p>
             </div>""",
             unsafe_allow_html=True,
         )
@@ -1781,18 +1858,18 @@ if PAGE == "Home":
             f"""<div class="jal-card">
                 <div style="font-size:40px;">🚰🧪🌧️</div>
                 <h3 style="margin-top:10px;">{T['live_sensors']}</h3>
-                <p style="color:#4A5A5C; line-height:1.55;">{T['water_temp']} · {T['ph_level']} · {T['turbidity']} ·
+                <p style="color:#B7CBC9; line-height:1.55;">{T['water_temp']} · {T['ph_level']} · {T['turbidity']} ·
                 {T['tds']} · {T['rainfall']} · {T['bacteria']} · {T['humidity']}</p>
             </div>""",
             unsafe_allow_html=True,
         )
- 
+
     st.markdown("<div style='height:30px'></div>", unsafe_allow_html=True)
     st.markdown(
         f"""
         <div class="jal-cta-band">
             <div>
-                <div style="font-family:'Fraunces',serif; font-weight:700; font-size:20px; color:#7A4A0A;">
+                <div style="font-family:'Fraunces',serif; font-weight:700; font-size:20px; color:#F2B155;">
                     {T['home_cta_footer_title']}
                 </div>
             </div>
@@ -1803,10 +1880,10 @@ if PAGE == "Home":
     if st.button("💧 " + T["home_cta_footer_btn"], type="primary"):
         st.session_state.nav_page = "Live"
         st.rerun()
- 
+
     st.markdown("<div style='height:14px'></div>", unsafe_allow_html=True)
     st.caption(T["footer"])
- 
+
 # =========================================================
 # PAGE: LIVE DASHBOARD
 # =========================================================
@@ -1830,13 +1907,13 @@ elif PAGE == "Live":
             padding:16px;text-align:center;font-weight:800;font-size:18px;color:{risk_color};">{risk_label}</div>""",
             unsafe_allow_html=True,
         )
- 
+
     if not is_live:
         st.warning(f"⚠️ {T['sim_banner']} {T['reason']}: {fetch_error}")
- 
+
     st.markdown("---")
     st.markdown(f"### 📡 {T['live_sensors']}")
- 
+
     s1, s2, s3, s4 = st.columns(4)
     s5, s6, s7, s8 = st.columns(4)
     s1.metric(T["water_temp"], format_temp(sensors["water_temp_c"]))
@@ -1847,11 +1924,11 @@ elif PAGE == "Live":
     s6.metric(T["rainfall"], f"{sensors['rainfall']:.1f}")
     s7.metric(T["bacteria"], f"{sensors['bacteria']:.0f}")
     s8.metric(T["humidity"], f"{sensors['humidity']:.0f}%")
- 
+
     st.markdown("---")
     st.markdown(f"### 🧬 {T['risk_prediction']}")
     col1, col2 = st.columns([1.2, 1])
- 
+
     with col1:
         st.markdown(f"#### {T['disease_breakdown']}")
         risk_df = pd.DataFrame({
@@ -1870,7 +1947,7 @@ elif PAGE == "Live":
             font=dict(family="Nunito"),
         )
         st.plotly_chart(fig_bar, use_container_width=True)
- 
+
     with col2:
         st.markdown(f"#### {T['overall_risk']}")
         fig_gauge = go.Figure(go.Indicator(
@@ -1890,23 +1967,23 @@ elif PAGE == "Live":
         fig_gauge.update_layout(height=320, margin=dict(l=10, r=10, t=30, b=10),
                                   paper_bgcolor="rgba(0,0,0,0)", font=dict(family="Nunito"))
         st.plotly_chart(fig_gauge, use_container_width=True)
- 
+
 # =========================================================
 # PAGE: TRENDS & HISTORY
 # =========================================================
 elif PAGE == "Trends":
     st.markdown(f"## 📈 {T['trends']}")
- 
+
     real_hist_df = fetch_real_historical_data()
     if real_hist_df is not None and len(real_hist_df) >= 2:
         st.markdown(f"<span class='jal-badge-live'>🟢 {T['real_history']} ({len(real_hist_df)})</span>", unsafe_allow_html=True)
         hist_df = real_hist_df
     else:
         st.markdown(f"<span class='jal-badge-sim'>⚪ {T['sim_history']}</span>", unsafe_allow_html=True)
- 
+
     st.markdown("<div style='height:14px'></div>", unsafe_allow_html=True)
     tab_trend, tab_events = st.tabs([f"📊 {T['trend_chart']}", f"📋 {T['events_log']}"])
- 
+
     with tab_trend:
         param_options = {
             T["bacteria"]: "bacteria", T["turbidity"]: "turbidity", T["ph_level"]: "ph",
@@ -1915,14 +1992,14 @@ elif PAGE == "Trends":
         }
         selected_param_label = st.selectbox(T["param_trend"], options=list(param_options.keys()))
         selected_param = param_options[selected_param_label]
- 
+
         plot_df = hist_df.copy()
         if selected_param in ["water_temp_c", "ambient_temp_c"] and st.session_state.temp_unit.startswith("Fahrenheit"):
             plot_df[selected_param] = c_to_f(plot_df[selected_param])
             y_title = selected_param_label.replace("°C", "°F")
         else:
             y_title = selected_param_label
- 
+
         fig_line = px.line(plot_df, x="datetime", y=selected_param, labels={"datetime": "", selected_param: y_title})
         fig_line.update_traces(line_color="#0F5C66", line_width=3)
         fig_line.update_layout(height=350, margin=dict(l=10, r=10, t=10, b=10),
@@ -1931,29 +2008,29 @@ elif PAGE == "Trends":
             fig_line.add_hline(y=50, line_dash="dash", line_color="#E9A23B", annotation_text=T["high_risk"])
             fig_line.add_hline(y=75, line_dash="dash", line_color="#C0392B", annotation_text=T["critical_risk"])
         st.plotly_chart(fig_line, use_container_width=True)
- 
+
     with tab_events:
         st.info(T["events_note"])
         high_events = count_contamination_events(hist_df, "overall_risk", threshold=50)
         critical_events = count_contamination_events(hist_df, "overall_risk", threshold=75)
         span_days = max((hist_df["datetime"].max() - hist_df["datetime"].min()).days, 1) if len(hist_df) >= 2 else 1
         peak_risk = float(hist_df["overall_risk"].max()) if len(hist_df) else 0.0
- 
+
         ec1, ec2, ec3, ec4 = st.columns(4)
         ec1.metric("⚠️ " + T["high_events"], high_events)
         ec2.metric("🔴 " + T["critical_events"], critical_events)
         ec3.metric("📈 " + T["peak_risk"], f"{peak_risk:.1f} / 100")
         ec4.metric("🗓️ " + T["period_covered"], f"{span_days} {T['days']}")
- 
+
         src_label = T["real_history"] if (real_hist_df is not None and len(real_hist_df) >= 2) else T["sim_history"]
         st.caption(f"{T['data_source']}: {src_label} — {len(hist_df)} {T['readings_analyzed']}.")
- 
+
 # =========================================================
 # PAGE: ZONE MAP
 # =========================================================
 elif PAGE == "Map":
     st.markdown(f"## 🗺️ {T['map_view']}")
- 
+
     map_rows = []
     for zname, zinfo in ZONES_DATA.items():
         zsensors, z_is_live, _ = get_sensor_data(zname, zinfo["firebase_key"], st.session_state.seed_offset)
@@ -1967,7 +2044,7 @@ elif PAGE == "Map":
             "Population": zinfo["population"], "Live": "🟢" if z_is_live else "⚪",
         })
     map_df = pd.DataFrame(map_rows)
- 
+
     fig_map = px.scatter_mapbox(
         map_df, lat="lat", lon="lon", size="Risk Score", color="Risk Score",
         color_continuous_scale=["#2E7D53", "#E9A23B", "#E07A2C", "#C0392B"],
@@ -1976,7 +2053,7 @@ elif PAGE == "Map":
     )
     fig_map.update_layout(mapbox_style="open-street-map", margin=dict(l=0, r=0, t=0, b=0), height=420)
     st.plotly_chart(fig_map, use_container_width=True)
- 
+
     st.dataframe(
         map_df[["Zone", "Population", "Risk Score", "Risk Level", "Live"]].rename(columns={
             "Zone": T["zone"], "Population": T["population"], "Risk Score": T["overall_risk"],
@@ -1984,7 +2061,7 @@ elif PAGE == "Map":
         }),
         use_container_width=True, hide_index=True,
     )
- 
+
     st.markdown(f"#### 🔍 {T['map_deep_dive']}")
     detail_zone = st.selectbox(T["map_deep_dive_select"], options=list(ZONES_DATA.keys()),
                                  index=list(ZONES_DATA.keys()).index(selected_zone), key="map_detail_zone")
@@ -1993,13 +2070,13 @@ elif PAGE == "Map":
     detail_risks = compute_disease_risks(detail_sensors)
     detail_overall = float(np.mean(list(detail_risks.values())))
     detail_lvl, detail_col = get_risk_label(detail_overall)
- 
+
     real_hist_for_detail = fetch_real_historical_data()
     detail_summary = summarize_zone_history(
         detail_zone, detail_info["firebase_key"],
         real_hist_for_detail if real_hist_for_detail is not None and len(real_hist_for_detail) >= 2 else None,
     )
- 
+
     dd1, dd2 = st.columns(2)
     with dd1:
         st.markdown(f"**📍 {detail_zone} — {T['right_now']}**")
@@ -2012,7 +2089,7 @@ elif PAGE == "Map":
         dd1a.metric(T["tds"], f"{detail_sensors['tds']:.0f}")
         dd1b.metric(T["turbidity"], f"{detail_sensors['turbidity']:.1f}")
         dd1c.metric(T["water_temp"], format_temp(detail_sensors['water_temp_c']))
- 
+
     with dd2:
         st.markdown(f"**🕓 {detail_zone} — {T['past']} {detail_summary['span_days']} {T['days']}**")
         st.caption(T["real_history"] if detail_summary["is_real"] else T["sim_history"])
@@ -2020,23 +2097,23 @@ elif PAGE == "Map":
         de1.metric(T["high_events"], f"{detail_summary['high_events']}x")
         de2.metric(T["critical_events"], f"{detail_summary['critical_events']}x")
         de3.metric(T["peak_risk"], f"{detail_summary['peak_risk']:.1f}/100")
- 
+
         if detail_summary["high_events"] == 0:
             st.info("✅ " + T["no_high_events"])
         elif detail_summary["critical_events"] > 0:
             st.error("🚨 " + T["critical_events_msg"].format(n=detail_summary["critical_events"], d=detail_summary["span_days"]))
         else:
             st.warning("⚠️ " + T["high_events_msg"].format(n=detail_summary["high_events"], d=detail_summary["span_days"]))
- 
+
 # =========================================================
 # PAGE: SAFETY GUIDE
 # =========================================================
 elif PAGE == "Safety":
     st.markdown(f"## 🛡️ {T['safety_title']}")
     st.caption(T["safety_sub"])
- 
+
     safety_tab_general, safety_tab_disease = st.tabs([f"✅ {T['safety_tab_general']}", f"🧬 {T['safety_tab_disease']}"])
- 
+
     with safety_tab_general:
         st.markdown(f"#### {T['safety_now_title']} **{selected_zone}**")
         if overall_risk >= 75:
@@ -2047,10 +2124,10 @@ elif PAGE == "Safety":
             st.info("ℹ️ " + T["risk_msg_moderate"])
         else:
             st.success("✅ " + T["risk_msg_low"])
- 
+
         for tip in DI["precautions"]:
             st.markdown(f"- {tip}")
- 
+
     with safety_tab_disease:
         disease_tab_objs = st.tabs([f"{DI['diseases'][d]['icon']} {translated_disease_names[d]}" for d in DISEASE_KEYS])
         for tab_obj, disease_key in zip(disease_tab_objs, DISEASE_KEYS):
@@ -2066,13 +2143,13 @@ elif PAGE == "Safety":
                 st.markdown(f"**🤒 {T['symptoms']}:** {info['symptoms']}")
                 st.markdown(f"**🛡️ {T['prevention']}:** {info['prevention']}")
                 st.markdown(f"**🏥 {T['seek_help']}:** {info['seek_help']}")
- 
+
 # =========================================================
 # PAGE: ALERTS & SMS
 # =========================================================
 elif PAGE == "Alerts":
     st.markdown(f"## 🚨 {T['alerts']}")
- 
+
     if not alerted:
         st.success("✅ " + T["no_alerts"])
     else:
@@ -2089,21 +2166,21 @@ elif PAGE == "Alerts":
         with st.expander("📋 " + T["recommendation"], expanded=True):
             for rec in [T["rec_1"], T["rec_2"], T["rec_3"], T["rec_4"], T["rec_5"]]:
                 st.markdown(f"- {rec}")
- 
+
     st.markdown("---")
     st.markdown(f"### 📱 {T['sms_settings']}")
- 
+
     sms_preview_body = build_sms_message(selected_zone, overall_risk, alerted if alerted else {"Overall": overall_risk}, sensors)
     st.markdown(f"**{T['sms_preview']}** → `{ALERT_PHONE_NUMBER}`")
     st.code(sms_preview_body, language=None)
- 
+
     col_sms1, col_sms2 = st.columns([1, 2])
     with col_sms1:
         send_now = st.button("📲 " + T["send_sms"], type="primary", use_container_width=True)
     with col_sms2:
         if not twilio_sid or not twilio_token or not twilio_from:
             st.warning("⚠️ " + T["sms_need_creds"])
- 
+
     if send_now:
         if twilio_sid and twilio_token and twilio_from:
             ok, status = send_sms_alert(sms_preview_body, twilio_sid, twilio_token, twilio_from)
@@ -2117,11 +2194,11 @@ elif PAGE == "Alerts":
                 st.error(f"❌ {T['sms_sent_fail']}: {status}")
         else:
             st.error(T["sms_need_creds"])
- 
+
     if st.session_state.sms_log:
         st.markdown(f"**📋 {T['sms_log']}**")
         st.dataframe(pd.DataFrame(st.session_state.sms_log), use_container_width=True, hide_index=True)
- 
+
 # =========================================================
 # AUTO REFRESH
 # =========================================================
