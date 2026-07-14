@@ -67,12 +67,12 @@ TWILIO_ACCOUNT_SID = "AC6048fef4548443ba3fb309bbcfaf5a82"
 TWILIO_AUTH_TOKEN = "8d401fbc0420807bae0e2bebe3b759f6"
 TWILIO_PHONE_NUMBER = "+16056206948"
 
-client = Client(ACCOUNT_SID, AUTH_TOKEN)
+client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 def send_sms(message):
     try:
         client.messages.create(
             body=message,
-            from_=TWILIO_NUMBER,
+            from_=TWILIO_PHONE_NUMBER,
             to=TO_NUMBER
         )
         print("SMS Sent Successfully")
