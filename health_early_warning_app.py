@@ -601,6 +601,61 @@ def compute_disease_risks(sensors):
     return risks
 
 
+def fetch_real_historical_data(max_records=2000):
+    """
+    Reads real logged sensor history from Firebase at /history
+    (populated by the ESP32 using http.POST(), which appends a new
+    timestamped entry each time instead of overwriting one value).
+
+    Returns a DataFrame sorted by time, or None if no real history
+    exists yet (e.g. ESP32 hasn't been updated to log history, or
+    hasn't run long enough to build up entries).
+    """
+    if not FIREBASE_AVAILABLE:
+        return None
+
+    try:
+        ref = db.reference("/history")
+        # order_by_key + limit_to_last keeps this fast even if history is large
+        data = ref.order_by_key().limit_to_last(max_records).get()
+        if not data:
+            return None
+
+        rows = []
+        for key, entry in data.items():
+            if not isinstance(entry, dict):
+                continue
+            ts = entry.get("timestamp")
+            if ts is None:
+                continue
+            rows.append({
+                "datetime": pd.to_datetime(ts, unit="s"),
+                "bacteria": float(entry.get("bacteria", np.nan)),
+                "turbidity": float(entry.get("turbidity", np.nan)),
+                "ph": float(entry.get("ph", np.nan)),
+                "rainfall": float(entry.get("rainfall", np.nan)),
+                "water_temp_c": float(entry.get("water_temp", entry.get("water_temp_c", np.nan))),
+                "ambient_temp_c": float(entry.get("ambient_temp_c", np.nan)),
+                "tds": float(entry.get("tds", np.nan)),
+            })
+
+        if not rows:
+            return None
+
+        df = pd.DataFrame(rows).sort_values("datetime").reset_index(drop=True)
+
+        # Overall risk per historical row, using the same weighting as compute_disease_risks,
+        # so the trend line is consistent with the live risk score elsewhere in the app.
+        bact_risk = np.clip(df["bacteria"].fillna(0) / 4, 0, 100)
+        turb_risk = np.clip(df["turbidity"].fillna(0) * 4, 0, 100)
+        rain_risk = np.clip(df["rainfall"].fillna(0) * 3, 0, 100)
+        df["overall_risk"] = np.clip(0.4 * bact_risk + 0.3 * turb_risk + 0.3 * rain_risk, 0, 100)
+
+        return df
+    except Exception:
+        return None
+
+
 def generate_historical_data(zone_name, days=14):
     """
     Historical trend data. NOTE: this remains simulated because it requires
@@ -978,8 +1033,9 @@ if real_hist_df is not None and len(real_hist_df) >= 2:
 else:
     st.warning(
         "⚠️ No real logged history found at /history yet — showing SIMULATED trend data instead. "
-        "Update your ESP32 to POST readings to /history to make this live."
+        "Update your ESP32 to POST readings to /history (see notes) to make this live."
     )
+    # hist_df already holds the simulated fallback generated earlier
 
 param_options = {
     T["bacteria"]:     "bacteria",
