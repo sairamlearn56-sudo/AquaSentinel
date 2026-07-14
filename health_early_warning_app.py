@@ -969,7 +969,17 @@ st.markdown("---")
 # HISTORICAL TRENDS
 # =========================================================
 st.subheader("📈 " + T["trends"])
-st.caption("ℹ️ Historical trends are simulated. See code comments for how to make this live too.")
+
+real_hist_df = fetch_real_historical_data()
+
+if real_hist_df is not None and len(real_hist_df) >= 2:
+    st.success(f"🟢 Showing REAL logged history from ESP32 ({len(real_hist_df)} readings)")
+    hist_df = real_hist_df
+else:
+    st.warning(
+        "⚠️ No real logged history found at /history yet — showing SIMULATED trend data instead. "
+        "Update your ESP32 to POST readings to /history to make this live."
+    )
 
 param_options = {
     T["bacteria"]:     "bacteria",
