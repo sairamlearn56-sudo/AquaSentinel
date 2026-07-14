@@ -701,6 +701,100 @@ ZONES_DATA = {
     "Zone E - Floodplain Area":     {"population": 3300, "lat": 17.375, "lon": 78.476, "firebase_key": "zone_e"},
 }
 
+
+def count_contamination_events(df, column="overall_risk", threshold=50):
+    """
+    Counts contamination 'events' rather than raw rows above threshold.
+    An event = one crossing from below the threshold to at/above it, so a
+    sustained 3-hour spike counts as ONE event, not dozens of rows.
+    """
+    if df is None or column not in df.columns or len(df) < 2:
+        return 0
+    above = df[column].fillna(0) >= threshold
+    crossings = above & ~above.shift(1, fill_value=False)
+    return int(crossings.sum())
+
+
+def summarize_zone_history(zone_name, firebase_key, real_hist_df_available):
+    """
+    Builds a per-zone historical summary: uses the REAL logged history if
+    this zone matches the physical sensor's data (all zones currently share
+    one ESP32 until multiple units are deployed), otherwise uses that
+    zone's simulated series so every zone still has a sensible summary.
+    Returns a dict with event counts and peak risk.
+    """
+    if real_hist_df_available is not None and len(real_hist_df_available) >= 2:
+        df = real_hist_df_available
+        is_real = True
+    else:
+        df = generate_historical_data(zone_name)
+        is_real = False
+
+    high_events = count_contamination_events(df, "overall_risk", threshold=50)
+    critical_events = count_contamination_events(df, "overall_risk", threshold=75)
+    peak_risk = float(df["overall_risk"].max()) if len(df) else 0.0
+    avg_risk = float(df["overall_risk"].mean()) if len(df) else 0.0
+    span_days = (df["datetime"].max() - df["datetime"].min()).days if len(df) >= 2 else 0
+
+    return {
+        "is_real": is_real,
+        "high_events": high_events,
+        "critical_events": critical_events,
+        "peak_risk": peak_risk,
+        "avg_risk": avg_risk,
+        "span_days": max(span_days, 1),
+        "num_readings": len(df),
+    }
+
+
+# =========================================================
+# SAFETY & PRECAUTION CONTENT
+# (Educational public-health guidance, English-only content;
+#  UI chrome around it still respects the selected language.)
+# =========================================================
+GENERAL_PRECAUTIONS = [
+    "Boil drinking water for at least 1 minute, or use certified purification tablets/filters, whenever turbidity or bacterial alerts are active.",
+    "Store treated water in clean, covered containers — avoid dipping hands or shared cups directly into storage containers.",
+    "Wash hands with soap for at least 20 seconds before eating/cooking and after using the toilet.",
+    "Avoid bathing, swimming, or washing utensils directly in flagged high-risk water sources.",
+    "Keep drinking water sources away from latrines, drainage, and livestock areas.",
+    "Report visibly discolored, foul-smelling, or unusually cloudy water to local health authorities immediately.",
+    "During heavy rainfall, treat all open water sources as higher-risk until sensor readings normalize.",
+]
+
+DISEASE_SAFETY_INFO = {
+    "Cholera": {
+        "icon": "🦠",
+        "symptoms": "Sudden watery diarrhea, vomiting, rapid dehydration.",
+        "prevention": "Drink only boiled/treated water; avoid raw or undercooked seafood from affected areas.",
+        "seek_help": "Seek medical care immediately if severe watery diarrhea or signs of dehydration (dizziness, dry mouth, reduced urination) appear.",
+    },
+    "Typhoid": {
+        "icon": "🌡️",
+        "symptoms": "Prolonged fever, weakness, stomach pain, headache.",
+        "prevention": "Practice good hand hygiene; avoid street food/water of unknown source in affected zones.",
+        "seek_help": "See a doctor if fever persists beyond 2–3 days, especially alongside stomach pain.",
+    },
+    "Diarrhea": {
+        "icon": "💧",
+        "symptoms": "Frequent loose stools, cramping, mild fever.",
+        "prevention": "Maintain safe drinking water and food hygiene; wash hands regularly.",
+        "seek_help": "Use oral rehydration salts (ORS); seek care if symptoms last more than 2 days or worsen.",
+    },
+    "Dysentery": {
+        "icon": "🩸",
+        "symptoms": "Bloody or mucus-mixed diarrhea, abdominal cramps, fever.",
+        "prevention": "Avoid contaminated water sources; ensure food is thoroughly cooked and served hot.",
+        "seek_help": "Seek medical attention promptly if blood is visible in stool.",
+    },
+    "Hepatitis A": {
+        "icon": "🫀",
+        "symptoms": "Fatigue, nausea, abdominal pain, jaundice (yellowing of skin/eyes).",
+        "prevention": "Vaccination where available; avoid raw shellfish and untreated water in affected areas.",
+        "seek_help": "Consult a doctor if jaundice, dark urine, or persistent fatigue develop.",
+    },
+}
+
 # =========================================================
 # SIDEBAR - SETTINGS
 # =========================================================
@@ -777,6 +871,7 @@ with st.sidebar:
 
     st.markdown("---")
     st.caption(T["footer"])
+
 
 
 # =========================================================
@@ -1037,38 +1132,64 @@ else:
     )
     # hist_df already holds the simulated fallback generated earlier
 
-param_options = {
-    T["bacteria"]:     "bacteria",
-    T["turbidity"]:    "turbidity",
-    T["ph_level"]:     "ph",
-    T["rainfall"]:     "rainfall",
-    T["water_temp"]:   "water_temp_c",
-    T["ambient_temp"]: "ambient_temp_c",
-    T["overall_risk"]: "overall_risk",
-}
+tab_trend, tab_events = st.tabs(["📊 Trend Chart", "📋 Contamination Events Log"])
 
-selected_param_label = st.selectbox(T["param_trend"], options=list(param_options.keys()))
-selected_param = param_options[selected_param_label]
+with tab_trend:
+    param_options = {
+        T["bacteria"]:     "bacteria",
+        T["turbidity"]:    "turbidity",
+        T["ph_level"]:     "ph",
+        T["rainfall"]:     "rainfall",
+        T["water_temp"]:   "water_temp_c",
+        T["ambient_temp"]: "ambient_temp_c",
+        T["overall_risk"]: "overall_risk",
+    }
 
-plot_df = hist_df.copy()
-if selected_param in ["water_temp_c", "ambient_temp_c"] and st.session_state.temp_unit.startswith("Fahrenheit"):
-    plot_df[selected_param] = c_to_f(plot_df[selected_param])
-    y_title = selected_param_label.replace("°C", "°F")
-else:
-    y_title = selected_param_label
+    selected_param_label = st.selectbox(T["param_trend"], options=list(param_options.keys()))
+    selected_param = param_options[selected_param_label]
 
-fig_line = px.line(
-    plot_df, x="datetime", y=selected_param,
-    labels={"datetime": "", selected_param: y_title},
-)
-fig_line.update_traces(line_color="#3498db")
-fig_line.update_layout(height=350, margin=dict(l=10, r=10, t=10, b=10))
+    plot_df = hist_df.copy()
+    if selected_param in ["water_temp_c", "ambient_temp_c"] and st.session_state.temp_unit.startswith("Fahrenheit"):
+        plot_df[selected_param] = c_to_f(plot_df[selected_param])
+        y_title = selected_param_label.replace("°C", "°F")
+    else:
+        y_title = selected_param_label
 
-if selected_param == "overall_risk":
-    fig_line.add_hline(y=50, line_dash="dash", line_color="orange", annotation_text=T["high_risk"])
-    fig_line.add_hline(y=75, line_dash="dash", line_color="red", annotation_text=T["critical_risk"])
+    fig_line = px.line(
+        plot_df, x="datetime", y=selected_param,
+        labels={"datetime": "", selected_param: y_title},
+    )
+    fig_line.update_traces(line_color="#3498db")
+    fig_line.update_layout(height=350, margin=dict(l=10, r=10, t=10, b=10))
 
-st.plotly_chart(fig_line, use_container_width=True)
+    if selected_param == "overall_risk":
+        fig_line.add_hline(y=50, line_dash="dash", line_color="orange", annotation_text=T["high_risk"])
+        fig_line.add_hline(y=75, line_dash="dash", line_color="red", annotation_text=T["critical_risk"])
+
+    st.plotly_chart(fig_line, use_container_width=True)
+
+with tab_events:
+    st.markdown(
+        "This log counts **distinct contamination events** — each time the risk score "
+        "crossed *into* a High or Critical level — rather than every single elevated reading, "
+        "so a single multi-hour spike counts once, not dozens of times."
+    )
+
+    high_events = count_contamination_events(hist_df, "overall_risk", threshold=50)
+    critical_events = count_contamination_events(hist_df, "overall_risk", threshold=75)
+    span_days = max((hist_df["datetime"].max() - hist_df["datetime"].min()).days, 1) if len(hist_df) >= 2 else 1
+    peak_risk = float(hist_df["overall_risk"].max()) if len(hist_df) else 0.0
+
+    ec1, ec2, ec3, ec4 = st.columns(4)
+    ec1.metric("⚠️ High-Risk Events", high_events)
+    ec2.metric("🔴 Critical-Risk Events", critical_events)
+    ec3.metric("📈 Peak Risk Recorded", f"{peak_risk:.1f} / 100")
+    ec4.metric("🗓️ Period Covered", f"{span_days} day(s)")
+
+    st.caption(
+        f"Data source: {'real ESP32 logged history' if (real_hist_df is not None and len(real_hist_df) >= 2) else 'simulated demo data'} "
+        f"— {len(hist_df)} readings analyzed."
+    )
 
 st.markdown("---")
 
@@ -1121,6 +1242,109 @@ st.dataframe(
     hide_index=True,
 )
 
+st.markdown("#### 🔍 Zone Deep-Dive: Live + Past Contamination History")
+detail_zone = st.selectbox(
+    "Select an area to view its live reading and contamination history",
+    options=list(ZONES_DATA.keys()),
+    index=list(ZONES_DATA.keys()).index(selected_zone),
+    key="map_detail_zone",
+)
+detail_info = ZONES_DATA[detail_zone]
+detail_sensors, detail_is_live, detail_err = get_sensor_data(
+    detail_zone, detail_info["firebase_key"], st.session_state.seed_offset
+)
+detail_risks = compute_disease_risks(detail_sensors)
+detail_overall = float(np.mean(list(detail_risks.values())))
+detail_lvl, detail_col = get_risk_label(detail_overall)
+detail_summary = summarize_zone_history(
+    detail_zone, detail_info["firebase_key"],
+    real_hist_df if real_hist_df is not None and len(real_hist_df) >= 2 else None,
+)
+
+with st.container():
+    dd1, dd2 = st.columns([1, 1])
+
+    with dd1:
+        st.markdown(f"**📍 {detail_zone} — Right Now**")
+        if detail_is_live:
+            st.success("🟢 Live ESP32 reading")
+        else:
+            st.warning("⚪ Simulated reading (no live ESP32 data for this path yet)")
+        st.metric("Current Risk Level", f"{detail_overall:.1f} / 100", delta=detail_lvl)
+        dd1a, dd1b, dd1c = st.columns(3)
+        dd1a.metric("TDS", f"{detail_sensors['tds']:.0f}")
+        dd1b.metric("Turbidity", f"{detail_sensors['turbidity']:.1f}")
+        dd1c.metric("Water Temp", format_temp(detail_sensors['water_temp_c']))
+
+    with dd2:
+        st.markdown(f"**🕓 {detail_zone} — Past {detail_summary['span_days']} Day(s)**")
+        st.caption(
+            "🟢 Based on real logged ESP32 history" if detail_summary["is_real"]
+            else "⚪ Based on simulated demo history (connect ESP32 history logging for real data)"
+        )
+        de1, de2, de3 = st.columns(3)
+        de1.metric("Contaminated (High Risk)", f"{detail_summary['high_events']}x")
+        de2.metric("Critical Events", f"{detail_summary['critical_events']}x")
+        de3.metric("Peak Risk", f"{detail_summary['peak_risk']:.1f}/100")
+
+        if detail_summary["high_events"] == 0:
+            st.info("✅ No high-risk contamination events recorded in this period.")
+        elif detail_summary["critical_events"] > 0:
+            st.error(
+                f"🚨 This zone reached CRITICAL contamination levels {detail_summary['critical_events']} time(s) "
+                f"in the last {detail_summary['span_days']} day(s). Continued monitoring and precautions advised."
+            )
+        else:
+            st.warning(
+                f"⚠️ This zone crossed into High Risk {detail_summary['high_events']} time(s) "
+                f"in the last {detail_summary['span_days']} day(s)."
+            )
+
+st.markdown("---")
+
+# =========================================================
+# SAFETY & PRECAUTIONS
+# =========================================================
+st.subheader("🛡️ Safety & Precautions Guide")
+st.caption(
+    "General public-health guidance — not a substitute for medical advice. "
+    "If you or someone nearby is seriously unwell, contact a healthcare provider immediately."
+)
+
+safety_tab_general, safety_tab_disease = st.tabs(["✅ General Precautions", "🧬 Disease-Specific Guidance"])
+
+with safety_tab_general:
+    st.markdown(f"#### Recommended precautions right now for **{selected_zone}**")
+    if overall_risk >= 75:
+        st.error("🚨 **Critical risk zone** — treat ALL local water sources as unsafe until levels normalize.")
+    elif overall_risk >= 50:
+        st.warning("⚠️ **High risk zone** — boil or treat water before any use; avoid direct contact with untreated sources.")
+    elif overall_risk >= 25:
+        st.info("ℹ️ **Moderate risk zone** — basic precautions recommended; monitor for updates.")
+    else:
+        st.success("✅ **Low risk zone** — conditions currently normal; standard hygiene practices still apply.")
+
+    for tip in GENERAL_PRECAUTIONS:
+        st.markdown(f"- {tip}")
+
+with safety_tab_disease:
+    st.markdown("Symptoms, prevention, and when to seek medical help for each monitored disease:")
+    disease_tab_objs = st.tabs([f"{DISEASE_SAFETY_INFO[d]['icon']} {translated_disease_names[d]}" for d in disease_risks.keys()])
+
+    for tab_obj, disease_key in zip(disease_tab_objs, disease_risks.keys()):
+        info = DISEASE_SAFETY_INFO[disease_key]
+        score = disease_risks[disease_key]
+        lvl, col = get_risk_label(score)
+        with tab_obj:
+            st.markdown(
+                f"**Current risk in {selected_zone}:** "
+                f"<span style='color:{col}; font-weight:700;'>{lvl} ({score:.1f}/100)</span>",
+                unsafe_allow_html=True,
+            )
+            st.markdown(f"**🤒 Symptoms:** {info['symptoms']}")
+            st.markdown(f"**🛡️ Prevention:** {info['prevention']}")
+            st.markdown(f"**🏥 When to seek help:** {info['seek_help']}")
+
 st.markdown("---")
 
 # =========================================================
@@ -1129,7 +1353,13 @@ st.markdown("---")
 st.subheader("🔍 " + T["key_insights"])
 
 insight_cols = st.columns(3)
-recent_risk_change = hist_df["overall_risk"].iloc[-24:].mean() - hist_df["overall_risk"].iloc[-48:-24].mean()
+if len(hist_df) >= 48:
+    recent_risk_change = hist_df["overall_risk"].iloc[-24:].mean() - hist_df["overall_risk"].iloc[-48:-24].mean()
+elif len(hist_df) >= 4:
+    half = len(hist_df) // 2
+    recent_risk_change = hist_df["overall_risk"].iloc[half:].mean() - hist_df["overall_risk"].iloc[:half].mean()
+else:
+    recent_risk_change = 0.0
 trend_icon = "📈" if recent_risk_change > 0 else "📉"
 
 with insight_cols[0]:
