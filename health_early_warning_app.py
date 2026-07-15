@@ -52,6 +52,7 @@ EXPECTED ESP32 DATA:
 
 import time
 import streamlit as st
+from auth import login, logout
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
@@ -67,7 +68,14 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
 
+if not st.session_state["logged_in"]:
+    login()
+    st.stop()
+
+logout()
 # =========================================================
 # STYLING — classic serif headings, clean body font, cards, animations
 # =========================================================
