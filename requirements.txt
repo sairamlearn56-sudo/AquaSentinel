@@ -5,3 +5,4 @@ plotly
 requests
 firebase-admin
 twilio
+pyrebase4
