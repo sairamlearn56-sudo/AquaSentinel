@@ -67,7 +67,16 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+from auth import login, logout
 
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+
+if not st.session_state["logged_in"]:
+    login()
+    st.stop()
+
+logout()
 # =========================================================
 # STYLING — light, friendly, card-based dashboard (matches mockup)
 # =========================================================
