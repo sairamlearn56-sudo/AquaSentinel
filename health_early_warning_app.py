@@ -188,6 +188,9 @@ def send_sms_alert(message: str, account_sid: str, auth_token: str, from_number:
     """Send an SMS alert using Twilio. Returns (success, status_message)."""
     try:
         from twilio.rest import Client
+        print("SID:", account_sid)
+        print("TOKEN:", auth_token[:6], "...")
+        print("FROM:", from_number)
         client = Client(account_sid, auth_token)
         msg = client.messages.create(
             body=message,
