@@ -810,18 +810,110 @@ else:
 # =========================================================
 # TOP HEADER (always visible)
 # =========================================================
+# =========================================================
+# MODERN HEADER
+# =========================================================
+
 risk_label, risk_color = get_risk_label(overall_risk)
-hc1, hc2, hc3 = st.columns([2, 1, 1])
-with hc1:
-    st.markdown(f"### 💧 {T['title']}")
-    st.caption(T["subtitle"])
-with hc2:
-    st.metric(T["overall_risk"], f"{overall_risk:.1f} / 100")
-with hc3:
-    st.markdown(f"""<div style="background-color:{risk_color}22;border:2px solid {risk_color};
-        border-radius:12px;padding:12px;text-align:center;font-weight:700;font-size:16px;color:{risk_color};">
-        {risk_label}</div>""", unsafe_allow_html=True)
-st.markdown("---")
+
+if overall_risk < 25:
+    status_icon = "🟢"
+    status_title = "WATER IS SAFE"
+    status_msg = "Safe for Drinking • Cooking • Washing"
+
+elif overall_risk < 50:
+    status_icon = "🟡"
+    status_title = "BOIL BEFORE DRINKING"
+    status_msg = "Water quality needs attention."
+
+else:
+    status_icon = "🔴"
+    status_title = "DO NOT DRINK THIS WATER"
+    status_msg = "High contamination risk detected."
+
+st.markdown(f"""
+<div style="
+background:linear-gradient(135deg,#0f172a,#1e293b);
+padding:35px;
+border-radius:22px;
+border:1px solid rgba(255,255,255,.08);
+margin-bottom:25px;
+box-shadow:0 10px 35px rgba(0,0,0,.25);
+">
+
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+">
+
+<div>
+
+<h1 style="
+margin:0;
+font-size:42px;
+color:white;
+">
+💧 AquaSentinel AI
+</h1>
+
+<p style="
+margin-top:8px;
+font-size:18px;
+color:#cbd5e1;
+">
+Protecting Communities Through Smart Water Intelligence
+</p>
+
+</div>
+
+<div style="
+background:#111827;
+padding:20px;
+border-radius:18px;
+text-align:center;
+min-width:260px;
+">
+
+<div style="font-size:42px;">
+{status_icon}
+</div>
+
+<h2 style="
+color:{risk_color};
+margin:5px 0;
+">
+{status_title}
+</h2>
+
+<p style="
+color:white;
+margin:0;
+">
+{status_msg}
+</p>
+
+<p style="
+margin-top:15px;
+color:#94a3b8;
+font-size:14px;
+">
+Overall Risk Score
+
+<b style="font-size:26px;color:white;">
+{overall_risk:.1f}/100
+</b>
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+""", unsafe_allow_html=True)
 
 page = st.session_state.nav_page
 
