@@ -64,7 +64,7 @@ import time
 from twilio.rest import Client
 import streamlit as st
 TWILIO_ACCOUNT_SID = "AC6048fef4548443ba3fb309bbcfaf5a82"
-TWILIO_AUTH_TOKEN = "8d401fbc0420807bae0e2bebe3b759f6"
+TWILIO_AUTH_TOKEN = "55c9cf33f66e6435dbdd34912ba5f11e"
 TWILIO_PHONE_NUMBER = "+16056206948"
 
 client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
