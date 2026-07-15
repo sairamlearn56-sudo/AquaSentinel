@@ -1,15 +1,15 @@
-import streamlit as st
-
 def login():
     st.title("🔐 AquaSentinel Login")
+
     tab1, tab2, tab3 = st.tabs([
-      "📧 Email",
-      "🔵 Google",
-      "📱 Phone OTP"
+        "📧 Email",
+        "🔵 Google",
+        "📱 Phone OTP"
     ])
-with tab1:
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
+
+    with tab1:
+        email = st.text_input("Email")
+        password = st.text_input("Password", type="password")
 
     if st.button("Login with Email"):
         if email and password:
