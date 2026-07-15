@@ -1,14 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>AquaSentinel Login</title>
+    <title>AquaSentinel Login</title>
 </head>
 <body>
+
 <h1>AquaSentinel</h1>
 
-<button id="googleLogin">
-Continue with Google
-</button>
+<button id="googleLogin">Continue with Google</button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCRMIMhbHYrnWTiYUJkVnnstne9Agv_VYVU",
+  authDomain: "water-project-50ce4.firebaseapp.com",
+  projectId: "water-project-50ce4",
+  storageBucket: "water-project-50ce4.firebasestorage.app",
+  messagingSenderId: "339176003385",
+  appId: "1:339176003385:web:5268221638ff2de8d4fae8"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+document.getElementById("googleLogin").onclick = () => {
+    const provider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            alert("Welcome " + result.user.displayName);
+        })
+        .catch((error) => {
+            alert(error.message);
+        });
+};
+</script>
 
 </body>
 </html>
